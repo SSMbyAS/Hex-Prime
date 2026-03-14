@@ -7,14 +7,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f8f9fa; font-family: sans-serif; }
     </style>
 </head>
 <body>
 
     <nav class="bg-[#1a73e8] p-4 text-white flex justify-between items-center shadow-md">
         <div class="flex items-center gap-2">
-            <i class="fas fa-cube"></i>
+            <i class="fas fa-shield-alt"></i>
             <span class="font-bold tracking-tight text-sm uppercase">HEX PRIME PANEL</span>
         </div>
         <i class="fas fa-bars"></i>
@@ -31,17 +31,17 @@
         </div>
 
         <div class="bg-white rounded shadow-sm border border-gray-100 overflow-hidden">
-            <div class="bg-[#1a73e8] text-white p-2.5 text-center text-xs font-semibold flex justify-center items-center gap-2">
-                <i class="fas fa-key text-[10px]"></i> Key Details
+            <div class="bg-[#1a73e8] text-white p-2.5 text-center text-xs font-semibold flex justify-center items-center gap-2 uppercase tracking-wider">
+                KEY DETAILS
             </div>
             
             <div class="p-5 text-center">
                 <p class="text-[10px] text-gray-400 font-bold mb-2 uppercase tracking-widest text-center">YOUR KEY</p>
                 
-                <div class="flex border rounded-md overflow-hidden mb-6">
-                    <input id="keyOutput" type="text" readonly value="5184507" class="w-full p-2.5 text-center font-mono font-bold text-gray-800 bg-gray-50 outline-none text-sm">
-                    <button onclick="copyKey()" class="bg-blue-50 border-l px-4 text-blue-600 hover:bg-blue-100 transition-colors">
-                        <i class="far fa-copy"></i>
+                <div class="flex border-2 border-black rounded-md overflow-hidden mb-6">
+                    <input id="keyOutput" type="text" readonly value="7545849" class="w-full p-2.5 text-center font-bold text-black bg-white outline-none text-base">
+                    <button onclick="copyKey()" class="bg-gray-50 border-l px-4 text-blue-600 hover:bg-blue-100 transition-colors border-l-2 border-black">
+                        <i class="far fa-copy text-lg"></i>
                     </button>
                 </div>
 
@@ -49,7 +49,7 @@
                     <div class="text-center">
                         <i class="fas fa-gamepad text-blue-500 mb-1"></i>
                         <p class="text-[9px] text-gray-400 uppercase font-black">Game</p>
-                        <p class="text-xs font-bold text-gray-700">Free Fire</p>
+                        <p class="text-xs font-bold text-gray-700">Free Fire Max</p>
                     </div>
                     <div class="text-center">
                         <i class="fas fa-calendar-alt text-green-500 mb-1"></i>
@@ -69,68 +69,47 @@
                 </div>
 
                 <div class="text-left pt-6 text-[11px] text-gray-500">
-                    <p class="font-bold mb-3"><i class="far fa-info-circle mr-1"></i> Key Status</p>
                     <div class="grid grid-cols-2 gap-y-3">
                         <div>
                             <p>Status:</p>
-                            <span class="bg-green-700 text-white px-2 py-0.5 rounded text-[9px] font-bold">Active</span>
-                        </div>
-                        <div>
-                            <p>Created:</p>
-                            <p id="cDate" class="font-bold text-black"></p>
-                        </div>
-                        <div>
-                            <p>Expires:</p>
-                            <p id="eDate" class="font-bold text-black"></p>
+                            <span class="text-green-600 font-bold">Active</span>
                         </div>
                         <div>
                             <p>Provider:</p>
-                            <p class="font-bold text-black">HEX PRIME</p>
+                            <p class="font-bold text-black uppercase">HEX PRIME</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="bg-[#d1ecf1] border border-[#bee5eb] p-4 rounded-lg text-[#0c5460] text-[11px]">
-            <p class="font-bold flex items-center gap-1.5 mb-2"><i class="far fa-lightbulb"></i> Important Notice</p>
-            <ul class="list-disc pl-5 space-y-1">
-                <li><strong>Save this key:</strong> This page can only be accessed once with the generation link.</li>
-                <li><strong>Duration starts:</strong> The 1-day period begins when you first login.</li>
-            </ul>
-        </div>
-
     </div>
 
     <script>
-        // Aapki di hui 2 keys (image_2.png)
         const myKeys = ["5184507", "7545849"];
 
-        // Page load hote hi key load karein (image_2.png)
         window.onload = function() {
-            // Randomly ek key pick karein (image_2.png)
-            const randomKey = myKeys[Math.floor(Math.random() * myKeys.length)];
-            
-            // Set Key in Input Box (image_2.png)
-            document.getElementById('keyOutput').value = randomKey;
-
-            // Automatically set current date and expiry date (image_2.png)
-            const now = new Date();
-            const expires = new Date(now.getTime() + (24 * 60 * 60 * 1000)); // +24 hours
-            
-            // Format dates (image_2.png)
-            const formatOptions = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-            document.getElementById('cDate').innerText = now.toLocaleString('sv-SE', formatOptions).replace(' ', ' ');
-            document.getElementById('eDate').innerText = expires.toLocaleString('sv-SE', formatOptions).replace(' ', ' ');
+            // Check if user already has a key in this session
+            let savedKey = localStorage.getItem('hex_user_key');
+            if (!savedKey) {
+                savedKey = myKeys[Math.floor(Math.random() * myKeys.length)];
+                localStorage.setItem('hex_user_key', savedKey);
+            }
+            document.getElementById('keyOutput').value = savedKey;
         };
 
         function copyKey() {
             const input = document.getElementById('keyOutput');
             input.select();
             document.execCommand('copy');
-            alert("Hex Prime: Key Copied!");
+            
+            // Temporary alert for copy confirmation
+            const btn = document.querySelector('button');
+            const originalIcon = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check text-green-500"></i>';
+            setTimeout(() => {
+                btn.innerHTML = originalIcon;
+            }, 2000);
         }
     </script>
-
 </body>
 </html>
