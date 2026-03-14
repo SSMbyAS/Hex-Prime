@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HEX PRIME</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>.hidden { display: none; }</style>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-blue-600 p-4 text-white font-bold shadow-md">HEX PRIME PANEL</nav>
+    <div class="max-w-md mx-auto p-4">
+        <div id="p1" class="bg-white p-6 rounded shadow border">
+            <h2 class="text-sm font-bold text-gray-600 mb-4 border-b pb-2">CREATE LICENSE - GLOBAL</h2>
+            <div class="space-y-4">
+                <div class="bg-gray-50 p-2 border rounded flex items-center gap-2"><i class="fas fa-gamepad text-gray-400"></i> Free Fire</div>
+                <div class="bg-gray-50 p-2 border rounded flex items-center gap-2"><i class="fas fa-mobile-alt text-gray-400"></i> 1 Device</div>
+                <button onclick="gen()" class="w-full bg-blue-600 text-white py-2 rounded font-bold">Generate</button>
+            </div>
+        </div>
+        <div id="p2" class="hidden space-y-4">
+            <div class="bg-green-100 border border-green-200 p-4 rounded text-center">
+                <div class="bg-green-600 text-white w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2"><i class="fas fa-check"></i></div>
+                <p class="text-green-800 font-bold text-sm">Key Generated Successfully!</p>
+            </div>
+            <div class="bg-white border rounded shadow overflow-hidden">
+                <div class="bg-blue-600 text-white p-2 text-center text-xs font-bold">KEY DETAILS</div>
+                <div class="p-6 text-center">
+                    <p class="text-[10px] text-gray-400 font-bold mb-2">YOUR KEY</p>
+                    <input id="keyBox" type="text" readonly class="w-full border p-2 text-center font-bold bg-gray-50 mb-4">
+                    <div class="grid grid-cols-2 text-[11px] border-t pt-4">
+                        <div class="text-left"><p class="text-gray-400">Status:</p><p class="text-green-600 font-bold">Active</p></div>
+                        <div class="text-left"><p class="text-gray-400">Provider:</p><p class="font-bold">HEX PRIME</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const keys = ["5184507", "7545849"];
+        window.onload = function() {
+            const old = localStorage.getItem('h_key');
+            if(old) show(old);
+        }
+        function gen() {
+            let k = localStorage.getItem('h_key') || keys[Math.floor(Math.random()*keys.length)];
+            localStorage.setItem('h_key', k);
+            show(k);
+        }
+        function show(k) {
+            document.getElementById('keyBox').value = k;
+            document.getElementById('p1').classList.add('hidden');
+            document.getElementById('p2').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
