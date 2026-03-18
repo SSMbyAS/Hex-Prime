@@ -1,69 +1,80 @@
-<script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzh3uRQQ6vDP5QSK0aUNGuZQ_QxmFhM9dqlu-uwe5B8Hx3vLB8UIiMmQKRaK53WY2Hg/exec';
-    
-    // Professional Services (Screenshot ke hisaab se)
-    const serviceData = {
-        "ig_likes": [
-            {name: "📸 Instagram ➔ Likes [Real]", price: 5, qty: 1000},
-            {name: "📸 Instagram ➔ Likes [Indian 🇮🇳]", price: 15, qty: 1000}
-        ],
-        "ig_followers": [
-            {name: "📸 Instagram ➔ Followers [Lifetime Refill]", price: 45, qty: 1000},
-            {name: "📸 Instagram ➔ Followers [Indian 🇮🇳]", price: 65, qty: 1000}
-        ],
-        "fb_services": [
-            {name: "🔵 Facebook ➔ Post Like", price: 12, qty: 1000},
-            {name: "🔵 Facebook ➔ Page Followers", price: 80, qty: 1000}
-        ],
-        "yt_services": [
-            {name: "🔴 YouTube ➔ Subscribers", price: 160, qty: 1000},
-            {name: "🔴 YouTube ➔ Views", price: 90, qty: 1000}
-        ]
-    };
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hex-Prime SMM</title>
+    <style>
+        /* Modern Dark Theme */
+        body { background: #0f172a; color: white; font-family: sans-serif; text-align: center; padding: 20px; }
+        .box { background: #1e293b; padding: 20px; border-radius: 15px; border: 1px solid #38bdf8; max-width: 400px; margin: auto; }
+        input { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; }
+        button { background: #38bdf8; color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; }
+        .toggle { margin-top: 15px; font-size: 14px; color: #94a3b8; cursor: pointer; }
+    </style>
+</head>
+<body>
 
-    // Database Connection Function
-    function handleAuth() {
-        const user = document.getElementById('authUsername').value.trim();
-        const pass = document.getElementById('authPass').value.trim();
-        const msg = document.getElementById('authMsg');
+    <h1>HEX-PRIME SMM</h1>
 
-        if(!user || !pass) {
-            msg.innerText = "Details bharna zaroori hai!";
-            return;
+    <div class="box" id="auth-box">
+        <h2 id="auth-title">Login</h2>
+        <input type="text" id="user" placeholder="Username">
+        <div id="extra-fields" style="display:none;">
+            <input type="email" id="email" placeholder="Gmail Address">
+            <input type="number" id="phone" placeholder="Phone Number">
+        </div>
+        <input type="password" id="pass" placeholder="Password">
+        <button onclick="handleAuth()" id="btn-text">Login Now</button>
+        <div class="toggle" onclick="toggleMode()" id="toggle-text">Naya Account Banayein (Signup)</div>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzh3uRQQ6vDP5QSK0aUNGuZQ_QxmFhM9dqlu-uwe5B8Hx3vLB8UIiMmQKRaK53WY2Hg/exec';
+        let isSignup = false;
+
+        function toggleMode() {
+            isSignup = !isSignup;
+            document.getElementById('auth-title').innerText = isSignup ? "Signup" : "Login";
+            document.getElementById('btn-text').innerText = isSignup ? "Register Now" : "Login Now";
+            document.getElementById('extra-fields').style.display = isSignup ? "block" : "none";
+            document.getElementById('toggle-text').innerText = isSignup ? "Pehle se account hai? Login" : "Naya Account Banayein (Signup)";
         }
 
-        if(authMode === 'signup') {
-            const email = document.getElementById('authEmail').value;
-            const phone = document.getElementById('authPhone').value;
-            msg.innerText = "Saving to Database...";
-            
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors', // Mobile safety ke liye
-                body: JSON.stringify({
-                    action: 'signup',
-                    user: user,
-                    pass: pass,
-                    email: email,
-                    phone: phone
-                })
-            }).then(() => {
-                alert("Hex-Prime User Registered! Ab Login karein.");
-                location.reload();
-            });
-        } else {
-            msg.innerText = "Verifying Account...";
-            fetch(`${scriptURL}?action=checkUser&user=${user}&pass=${pass}`)
-                .then(res => res.text())
-                .then(status => {
-                    if(status === "Valid") {
-                        localStorage.setItem('isLoggedIn', 'true');
-                        localStorage.setItem('currentUser', user);
-                        location.reload();
+        function handleAuth() {
+            const u = document.getElementById('user').value;
+            const p = document.getElementById('pass').value;
+
+            if(isSignup) {
+                // Signup Logic
+                fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify({
+                        action: 'signup',
+                        user: u,
+                        pass: p,
+                        email: document.getElementById('email').value,
+                        phone: document.getElementById('phone').value
+                    })
+                }).then(() => {
+                    alert("Account details Sheet mein save ho gayi! Ab Login karein.");
+                    location.reload();
+                });
+            } else {
+                // Login Logic
+                fetch(`${scriptURL}?action=checkUser&user=${u}&pass=${p}`)
+                .then(r => r.text())
+                .then(res => {
+                    if(res === "Valid") {
+                        alert("Welcome to Hex-Prime!");
+                        // Yahan wo panel wala code khulega
                     } else {
-                        msg.innerText = "Invalid Username/Password!";
+                        alert("Galat User/Pass!");
                     }
                 });
+            }
         }
-    }
-</script>
+    </script>
+</body>
+</html>
