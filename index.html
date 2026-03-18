@@ -4,209 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HEX-PRIME SMM PANEL</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --primary: #38bdf8; --bg: #0f172a; --card: #1e293b; --whatsapp: #25d366; --gold: #facc15; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; margin: 0; display: flex; flex-direction: column; align-items: center; }
-        
-        /* Auth Screen */
-        #auth-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--bg); z-index: 5000; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
-        .auth-card { background: var(--card); padding: 30px; border-radius: 20px; width: 100%; max-width: 400px; border: 1px solid #334155; text-align: center; }
-        .auth-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .auth-tab { flex: 1; padding: 10px; cursor: pointer; border-bottom: 2px solid #334155; color: #94a3b8; font-weight: bold; }
-        .auth-tab.active { border-color: var(--primary); color: var(--primary); }
-        .auth-input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; outline: none; box-sizing: border-box; }
-        .auth-btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
-
-        /* Main Panel */
-        #main-panel { display: none; width: 100%; max-width: 500px; padding: 20px; box-sizing: border-box; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .logo { font-size: 24px; font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; }
-        
-        .card { background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid #334155; margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-size: 12px; color: #94a3b8; text-transform: uppercase; }
-        select, input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; margin-bottom: 15px; box-sizing: border-box; }
-        
-        .price-box { background: var(--primary); color: #000; padding: 15px; border-radius: 10px; text-align: center; font-size: 24px; font-weight: bold; margin-bottom: 15px; }
-        .order-btn { width: 100%; padding: 15px; background: #22c55e; border: none; border-radius: 10px; color: white; font-size: 18px; font-weight: bold; cursor: pointer; }
-        
-        #qr-section { display: none; margin-top: 20px; text-align: center; border-top: 1px dashed #334155; padding-top: 15px; }
-        .logout-btn { background: none; border: 1px solid #ef4444; color: #ef4444; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+        :root { --primary: #38bdf8; --bg: #0f172a; --card: #1e293b; }
+        body { font-family: sans-serif; background: var(--bg); color: white; margin: 0; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .card { background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid #334155; width: 100%; max-width: 400px; box-sizing: border-box; margin-top: 50px; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; background: var(--primary); border: none; border-radius: 10px; color: #000; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .msg { font-size: 12px; margin-top: 10px; color: #fbbf24; }
+        #main-panel { display: none; width: 100%; max-width: 450px; }
+        .logout-btn { background: #ef4444; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; float: right; border:none; }
     </style>
 </head>
 <body>
 
 <div id="auth-screen">
-    <div class="auth-card">
-        <h2 style="color:var(--primary); margin-top:0;">HEX-PRIME LOGIN</h2>
-        <div class="auth-tabs">
-            <div class="auth-tab active" id="loginTab" onclick="toggleAuth('login')">Login</div>
-            <div class="auth-tab" id="signupTab" onclick="toggleAuth('signup')">Signup</div>
+    <div class="card">
+        <h2 style="text-align:center; color:var(--primary)">HEX-PRIME</h2>
+        <div id="login-form">
+            <input type="text" id="u" placeholder="Username">
+            <input type="password" id="p" placeholder="Password">
+            <button class="btn" onclick="login()">LOGIN</button>
+            <p onclick="showSignup()" style="text-align:center; font-size:13px; cursor:pointer; color:var(--primary)">Naya Account? Signup</p>
         </div>
-        
-        <div id="authInputs">
-            <input type="text" id="authUsername" class="auth-input" placeholder="Username">
-            <div id="signupOnly" style="display:none;">
-                <input type="email" id="authEmail" class="auth-input" placeholder="Gmail Address">
-                <input type="number" id="authPhone" class="auth-input" placeholder="Phone Number">
-            </div>
-            <input type="password" id="authPass" class="auth-input" placeholder="Password">
-            <button class="auth-btn" id="authSubmit" onclick="handleAuth()">LOGIN NOW</button>
+        <div id="signup-form" style="display:none;">
+            <input type="text" id="su" placeholder="Username">
+            <input type="email" id="se" placeholder="Gmail">
+            <input type="number" id="sp" placeholder="Phone">
+            <input type="password" id="spass" placeholder="Password">
+            <button class="btn" onclick="signup()">CREATE ACCOUNT</button>
+            <p onclick="showLogin()" style="text-align:center; font-size:13px; cursor:pointer; color:var(--primary)">Pehle se account hai? Login</p>
         </div>
-        <p id="authMsg" style="font-size:12px; color:#ef4444; margin-top:10px;"></p>
+        <p id="status" class="msg"></p>
     </div>
 </div>
 
 <div id="main-panel">
-    <div class="header">
-        <div class="logo">HEX-PRIME</div>
-        <button class="logout-btn" onclick="logout()">Logout</button>
-    </div>
-
+    <button class="logout-btn" onclick="logout()">Logout</button>
+    <h2>Dashboard</h2>
     <div class="card">
-        <label><i class="fas fa-link"></i> Target Link</label>
-        <input type="text" id="targetLink" placeholder="https://www.instagram.com/p/...">
-
-        <label><i class="fas fa-list"></i> Category</label>
-        <select id="categorySelect" onchange="loadServices()">
-            <option value="">-- Choose Category --</option>
-            <option value="ig_likes">Instagram Likes ❤️</option>
-            <option value="ig_followers">Instagram Followers 👥</option>
-            <option value="fb_services">Facebook Services 👍</option>
+        <label>Category</label>
+        <select id="cat" onchange="updateServices()">
+            <option value="">Choose...</option>
+            <option value="ig">Instagram Services</option>
+            <option value="fb">Facebook Services</option>
         </select>
-
-        <label><i class="fas fa-box-open"></i> Select Service</label>
-        <select id="serviceSelect" onchange="updatePrice()">
-            <option value="">Select Category First</option>
-        </select>
-
-        <div class="price-box" id="priceDisplay">₹0.00</div>
-        <button class="order-btn" id="payBtn" onclick="showQR()">Confirm Order</button>
-
-        <div id="qr-section">
-            <p style="color:var(--gold); font-weight:bold;">Scan & Pay: ₹<span id="finalAmt">0.00</span></p>
-            <img src="" id="qrImg" style="width:200px; border:5px solid white; border-radius:10px;">
-            <p style="font-size:12px; color:#94a3b8; margin:10px 0;">UPI: 7388720012@fam</p>
-            <input type="text" id="utr" placeholder="Enter 12 Digit UTR Number">
-            <button class="order-btn" style="background:#2563eb;" onclick="submitOrder()">Submit Payment</button>
-        </div>
+        <label>Service</label>
+        <select id="ser"></select>
+        <input type="text" placeholder="Paste Link Here">
+        <button class="btn" style="background:#22c55e">Place Order</button>
     </div>
 </div>
 
 <script>
-    // ⚠️ APNA GOOGLE SCRIPT URL YAHAN DAALEIN
     const scriptURL = 'https://script.google.com/macros/s/AKfycbzh3uRQQ6vDP5QSK0aUNGuZQ_QxmFhM9dqlu-uwe5B8Hx3vLB8UIiMmQKRaK53WY2Hg/exec';
-    
-    let authMode = 'login';
 
-    // Services Data
-    const serviceData = {
-        "ig_likes": [
-            {name: "📸 Instagram ➔ Likes [Real]", price: 5},
-            {name: "📸 Instagram ➔ Likes [Indian 🇮🇳]", price: 15}
-        ],
-        "ig_followers": [
-            {name: "📸 Instagram ➔ Followers [Lifetime]", price: 45},
-            {name: "📸 Instagram ➔ Followers [Indian 🇮🇳]", price: 65}
-        ],
-        "fb_services": [
-            {name: "🔵 Facebook ➔ Post Like", price: 12},
-            {name: "🔵 Facebook ➔ Followers", price: 85}
-        ]
-    };
-
-    // Check Login Session
-    window.onload = () => {
-        if(localStorage.getItem('isLoggedIn') === 'true') {
-            document.getElementById('auth-screen').style.display = 'none';
-            document.getElementById('main-panel').style.display = 'block';
-        }
-    };
-
-    function toggleAuth(mode) {
-        authMode = mode;
-        document.getElementById('loginTab').classList.toggle('active', mode === 'login');
-        document.getElementById('signupTab').classList.toggle('active', mode === 'signup');
-        document.getElementById('signupOnly').style.display = (mode === 'signup' ? 'block' : 'none');
-        document.getElementById('authSubmit').innerText = (mode === 'login' ? 'LOGIN NOW' : 'CREATE ACCOUNT');
+    // Session Check
+    if(localStorage.getItem('hexLogin') === 'true') {
+        document.getElementById('auth-screen').style.display = 'none';
+        document.getElementById('main-panel').style.display = 'block';
     }
 
-    function handleAuth() {
-        const user = document.getElementById('authUsername').value.trim();
-        const pass = document.getElementById('authPass').value.trim();
-        const msg = document.getElementById('authMsg');
+    function showSignup() { document.getElementById('login-form').style.display='none'; document.getElementById('signup-form').style.display='block'; }
+    function showLogin() { document.getElementById('login-form').style.display='block'; document.getElementById('signup-form').style.display='none'; }
 
-        if(!user || !pass) return msg.innerText = "Please fill all fields!";
+    async function signup() {
+        const data = {
+            action: 'signup',
+            user: document.getElementById('su').value,
+            email: document.getElementById('se').value,
+            phone: document.getElementById('sp').value,
+            pass: document.getElementById('spass').value
+        };
+        if(!data.user || !data.pass) return alert("All fields required!");
+        
+        document.getElementById('status').innerText = "Registering... (Please wait 5-10 sec)";
+        
+        try {
+            await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
+            alert("Signup Success! Ab Login Karein.");
+            showLogin();
+        } catch(e) { 
+            document.getElementById('status').innerText = "Error: " + e.message;
+        }
+    }
 
-        if(authMode === 'signup') {
-            msg.innerText = "Registering...";
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify({
-                    action: 'signup',
-                    user: user,
-                    pass: pass,
-                    email: document.getElementById('authEmail').value,
-                    phone: document.getElementById('authPhone').value
-                })
-            }).then(() => {
-                alert("Account Created! Now Login.");
+    async function login() {
+        const u = document.getElementById('u').value;
+        const p = document.getElementById('p').value;
+        if(!u || !p) return alert("Fill details!");
+
+        document.getElementById('status').innerText = "Checking...";
+        try {
+            const res = await fetch(`${scriptURL}?action=checkUser&user=${u}&pass=${p}`);
+            const text = await res.text();
+            if(text.trim() === "Valid") {
+                localStorage.setItem('hexLogin', 'true');
                 location.reload();
-            });
-        } else {
-            msg.innerText = "Checking Login...";
-            fetch(`${scriptURL}?action=checkUser&user=${user}&pass=${pass}`)
-                .then(res => res.text())
-                .then(status => {
-                    if(status === "Valid") {
-                        localStorage.setItem('isLoggedIn', 'true');
-                        localStorage.setItem('currentUser', user);
-                        location.reload();
-                    } else {
-                        msg.innerText = "Invalid Username or Password!";
-                    }
-                });
+            } else {
+                document.getElementById('status').innerText = "Galat Username/Password!";
+            }
+        } catch(e) {
+            document.getElementById('status').innerText = "Error: Database se connect nahi ho raha.";
         }
     }
 
-    function loadServices() {
-        const cat = document.getElementById("categorySelect").value;
-        const sSelect = document.getElementById("serviceSelect");
-        sSelect.innerHTML = '<option value="">-- Choose Service --</option>';
-        if(cat && serviceData[cat]) {
-            serviceData[cat].forEach(s => {
-                sSelect.add(new Option(s.name + " - ₹" + s.price, JSON.stringify(s)));
-            });
+    function logout() { localStorage.clear(); location.reload(); }
+
+    function updateServices() {
+        const cat = document.getElementById('cat').value;
+        const ser = document.getElementById('ser');
+        ser.innerHTML = "";
+        if(cat === 'ig') {
+            ser.add(new Option("Instagram Likes - ₹5", "5"));
+            ser.add(new Option("Instagram Followers - ₹45", "45"));
+        } else if(cat === 'fb') {
+            ser.add(new Option("Facebook Likes - ₹10", "10"));
         }
-        updatePrice();
-    }
-
-    function updatePrice() {
-        const val = document.getElementById("serviceSelect").value;
-        if(val) {
-            const s = JSON.parse(val);
-            document.getElementById("priceDisplay").innerText = "₹" + s.price;
-            document.getElementById("finalAmt").innerText = s.price;
-            document.getElementById("qrImg").src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=7388720012@fam%26am=${s.price}%26cu=INR`;
-        }
-    }
-
-    function showQR() {
-        if(!document.getElementById("targetLink").value) return alert("Link daalein!");
-        document.getElementById("qr-section").style.display = "block";
-        document.getElementById("payBtn").style.display = "none";
-    }
-
-    function submitOrder() {
-        if(document.getElementById("utr").value.length < 12) return alert("Sahi UTR daalein!");
-        alert("Payment Submitted! Order will start soon.");
-        location.reload();
-    }
-
-    function logout() {
-        localStorage.removeItem('isLoggedIn');
-        location.reload();
     }
 </script>
 </body>
