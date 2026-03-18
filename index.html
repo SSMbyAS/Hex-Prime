@@ -1,38 +1,45 @@
 <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbzh3uRQQ6vDP5QSK0aUNGuZQ_QxmFhM9dqlu-uwe5B8Hx3vLB8UIiMmQKRaK53WY2Hg/exec';
-    let authMode = 'login';
-
-    // Dropdown Data (Jo aapne screenshot mein dikhaya tha)
+    
+    // Professional Services (Screenshot ke hisaab se)
     const serviceData = {
-        "ig_services": [
-            {name: "📸 Instagram ➔ Likes", price: 5, qty: 1000},
-            {name: "📸 Instagram ➔ Followers | Lifetime", price: 45, qty: 1000},
-            {name: "📸 Instagram ➔ Views | Provider", price: 2, qty: 1000},
-            {name: "📸 Instagram ➔ Story Views", price: 3, qty: 1000}
+        "ig_likes": [
+            {name: "📸 Instagram ➔ Likes [Real]", price: 5, qty: 1000},
+            {name: "📸 Instagram ➔ Likes [Indian 🇮🇳]", price: 15, qty: 1000}
+        ],
+        "ig_followers": [
+            {name: "📸 Instagram ➔ Followers [Lifetime Refill]", price: 45, qty: 1000},
+            {name: "📸 Instagram ➔ Followers [Indian 🇮🇳]", price: 65, qty: 1000}
         ],
         "fb_services": [
-            {name: "🔵 Facebook ➔ Post Like", price: 10, qty: 1000},
-            {name: "🔵 Facebook ➔ Page Followers", price: 85, qty: 1000},
-            {name: "🔵 Facebook ➔ Views", price: 60, qty: 1000}
+            {name: "🔵 Facebook ➔ Post Like", price: 12, qty: 1000},
+            {name: "🔵 Facebook ➔ Page Followers", price: 80, qty: 1000}
+        ],
+        "yt_services": [
+            {name: "🔴 YouTube ➔ Subscribers", price: 160, qty: 1000},
+            {name: "🔴 YouTube ➔ Views", price: 90, qty: 1000}
         ]
     };
 
-    // Signup aur Login Handle Karne ka Function
+    // Database Connection Function
     function handleAuth() {
         const user = document.getElementById('authUsername').value.trim();
         const pass = document.getElementById('authPass').value.trim();
         const msg = document.getElementById('authMsg');
 
-        if(!user || !pass) return msg.innerText = "Sari details bharein!";
+        if(!user || !pass) {
+            msg.innerText = "Details bharna zaroori hai!";
+            return;
+        }
 
         if(authMode === 'signup') {
             const email = document.getElementById('authEmail').value;
             const phone = document.getElementById('authPhone').value;
-            
-            msg.innerText = "Registering... Please wait.";
+            msg.innerText = "Saving to Database...";
             
             fetch(scriptURL, {
                 method: 'POST',
+                mode: 'no-cors', // Mobile safety ke liye
                 body: JSON.stringify({
                     action: 'signup',
                     user: user,
@@ -41,13 +48,11 @@
                     phone: phone
                 })
             }).then(() => {
-                alert("Account ban gaya! Ab Login karein.");
+                alert("Hex-Prime User Registered! Ab Login karein.");
                 location.reload();
-            }).catch(err => {
-                msg.innerText = "Error: Internet check karein.";
             });
         } else {
-            msg.innerText = "Checking Login...";
+            msg.innerText = "Verifying Account...";
             fetch(`${scriptURL}?action=checkUser&user=${user}&pass=${pass}`)
                 .then(res => res.text())
                 .then(status => {
@@ -56,7 +61,7 @@
                         localStorage.setItem('currentUser', user);
                         location.reload();
                     } else {
-                        msg.innerText = "Galat Username ya Password!";
+                        msg.innerText = "Invalid Username/Password!";
                     }
                 });
         }
