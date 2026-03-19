@@ -3,141 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMMbyAS - Pro Automation</title>
+    <title>SMMbyAS - Open Panel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --bg: #0f172a; --card: #1e293b; --primary: #38bdf8; --accent: #22c55e; --text: #f8fafc; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 10px; }
-        .container { max-width: 450px; margin: auto; }
-        .card { background: var(--card); border-radius: 15px; padding: 20px; border: 1px solid #334155; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        h2 { text-align: center; color: var(--primary); margin-bottom: 20px; }
-        label { display: block; margin: 10px 0 5px; font-size: 12px; color: #94a3b8; font-weight: bold; }
-        input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; margin-bottom: 10px; outline: none; }
-        .btn-main { width: 100%; background: var(--primary); color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-main:hover { opacity: 0.8; }
-        #mainPanel { display: none; }
-        .balance-box { background: linear-gradient(135deg, #38bdf8, #1d4ed8); padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; }
-        .bal-amt { font-size: 32px; font-weight: 900; margin: 5px 0; }
-        .footer-nav { text-align: center; margin-top: 20px; font-size: 12px; color: #64748b; }
+        :root { --bg: #0b0f1a; --card: #161b2d; --primary: #38bdf8; --accent: #22c55e; --text: #ffffff; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; }
+        .container { max-width: 480px; margin: auto; }
+        .header { text-align: center; padding: 20px 0; border-bottom: 1px solid #2d3748; margin-bottom: 20px; }
+        .card { background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid #2d3748; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        label { display: block; margin: 15px 0 5px; font-size: 13px; color: #a0aec0; font-weight: 600; }
+        input, select { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #2d3748; background: #0b0f1a; color: white; box-sizing: border-box; font-size: 15px; outline: none; }
+        .wallet-bar { background: linear-gradient(90deg, #1e293b, #334155); padding: 12px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-left: 4px solid var(--primary); }
+        .btn-pay { width: 100%; background: var(--accent); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3); }
+        .btn-add { background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div id="loginSection" class="card">
-        <h2>SMMbyAS LOGIN</h2>
-        <p style="text-align:center; font-size:13px; color:#94a3b8">Number daal kar Login karein.</p>
-        <label>WhatsApp Number</label>
-        <input type="number" id="userMobile" placeholder="e.g. 7388720012">
-        <button class="btn-main" onclick="userLogin()" id="loginBtn">Check Balance & Login</button>
+    <div class="header">
+        <h1 style="margin:0; color:var(--primary); font-size:24px;">SMMbyAS <span style="color:white">MODS</span></h1>
+        <p style="font-size:12px; color:#a0aec0; margin:5px 0;">Automated API Panel - StarOfSMM</p>
     </div>
 
-    <div id="mainPanel">
-        <div class="balance-box">
-            <p style="margin:0; opacity:0.9">My Wallet Balance</p>
-            <div class="bal-amt">₹<span id="balDisplay">0.00</span></div>
-            <small id="userDisplay" style="background:rgba(0,0,0,0.2); padding:3px 10px; border-radius:10px"></small>
+    <div class="wallet-bar">
+        <div>
+            <span style="font-size:11px; color:#a0aec0; display:block;">Your Balance</span>
+            <span style="font-size:18px; font-weight:bold;">₹<span id="balText">0.00</span></span>
+        </div>
+        <button class="btn-add" onclick="alert('Contact Admin to Add Funds!')">Add Fund</button>
+    </div>
+
+    <div class="card">
+        <label>YOUR WHATSAPP NUMBER (For Wallet)</label>
+        <input type="number" id="userMobile" placeholder="Enter number to sync balance" oninput="fetchBalance()">
+
+        <label>SERVICE</label>
+        <select id="serviceSelect" onchange="calcPrice()">
+            <option value='{"id": 9259, "price": 4}'>Instagram Views (Fast) - ₹4</option>
+        </select>
+
+        <label>INSTAGRAM LINK</label>
+        <input type="text" id="targetLink" placeholder="https://instagram.com/reel/...">
+
+        <label>QUANTITY</label>
+        <input type="number" id="qty" value="1000" oninput="calcPrice()">
+
+        <div style="text-align:center; margin:20px 0;">
+            <span style="font-size:13px; color:#a0aec0;">Total Cost:</span>
+            <div style="font-size:26px; font-weight:900; color:var(--primary);">₹<span id="costText">4.00</span></div>
         </div>
 
-        <div class="card">
-            <label><i class="fas fa-list"></i> SELECT SERVICE</label>
-            <select id="serviceSelect" onchange="updateUI()">
-                <option value="">-- Choose Package --</option>
-                <option value='{"id": 9259, "price": 4, "name": "Instagram Views (Fast)"}'>Instagram Views - ₹4 (per 1k)</option>
-            </select>
-
-            <label><i class="fas fa-link"></i> INSTA LINK</label>
-            <input type="text" id="targetLink" placeholder="Paste Video Link Here">
-
-            <label><i class="fas fa-sort-numeric-up"></i> QUANTITY</label>
-            <input type="number" id="qty" value="1000" oninput="updateUI()">
-            
-            <div id="costBox" style="background:#0f172a; padding:10px; border-radius:8px; text-align:center; margin:10px 0; border:1px dashed var(--primary)">
-                <span style="color:#94a3b8; font-size:12px">Aapka Kharcha:</span>
-                <div style="font-size:20px; font-weight:bold; color:var(--primary)">₹<span id="costDisplay">0.00</span></div>
-            </div>
-
-            <button class="btn-main" style="background:var(--accent)" id="buyBtn" onclick="placeOrder()">Place Order (Wallet Pay)</button>
-        </div>
+        <button class="btn-pay" id="orderBtn" onclick="placeOrder()">Order with Wallet</button>
     </div>
 </div>
 
 <script>
-    // Aapka Deploy URL
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxnJ_EoHG1W2Om0K5VX5UeUNRM-9BwQfLXQ9aIqWstYp3WTes_P20UrW8gU74RnhNskNw/exec";
+    
+    let currentBalance = 0;
 
-    let currentUser = "";
-    let userBalance = 0;
-
-    async function userLogin() {
+    // Jaise hi number daale, balance apne aap dikhe
+    async function fetchBalance() {
         const mobile = document.getElementById("userMobile").value;
-        if(mobile.length < 10) return alert("Sahi number daalein!");
-        const btn = document.getElementById("loginBtn");
-        btn.innerText = "Connecting... ⏳";
-        
-        try {
-            const res = await fetch(`${SCRIPT_URL}?action=getBalance&mobile=${mobile}`);
-            const data = await res.json();
-            if(data.msg === "OK") {
-                currentUser = mobile;
-                userBalance = data.data;
-                document.getElementById("balDisplay").innerText = userBalance.toFixed(2);
-                document.getElementById("userDisplay").innerText = "User: " + mobile;
-                document.getElementById("loginSection").style.display = "none";
-                document.getElementById("mainPanel").style.display = "block";
-            } else {
-                alert("Pehle Google Sheet 'Users' tab mein apna number add karein!");
-                btn.innerText = "Check Balance & Login";
-            }
-        } catch(e) { alert("Server error!"); btn.innerText = "Check Balance & Login"; }
+        if(mobile.length >= 10) {
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getBalance&mobile=${mobile}`);
+                const data = await res.json();
+                if(data.msg === "OK") {
+                    currentBalance = data.data;
+                    document.getElementById("balText").innerText = currentBalance.toFixed(2);
+                }
+            } catch(e) {}
+        }
     }
 
-    function updateUI() {
-        const sVal = document.getElementById("serviceSelect").value;
-        const qty = document.getElementById("qty").value;
-        if(!sVal || !qty) return;
-        const s = JSON.parse(sVal);
-        const finalCost = (s.price * qty / 1000).toFixed(2);
-        document.getElementById("costDisplay").innerText = finalCost;
+    function calcPrice() {
+        const s = JSON.parse(document.getElementById("serviceSelect").value);
+        const q = document.getElementById("qty").value;
+        const total = (s.price * q / 1000).toFixed(2);
+        document.getElementById("costText").innerText = total;
     }
 
     async function placeOrder() {
-        const sVal = document.getElementById("serviceSelect").value;
-        const link = document.getElementById("targetLink").value.trim();
-        const qty = document.getElementById("qty").value;
-        if(!sVal || !link) return alert("Details bhariye!");
-        
-        const service = JSON.parse(sVal);
-        const cost = parseFloat((service.price * qty / 1000).toFixed(2));
+        const mobile = document.getElementById("userMobile").value;
+        const link = document.getElementById("targetLink").value;
+        const sVal = JSON.parse(document.getElementById("serviceSelect").value);
+        const q = document.getElementById("qty").value;
+        const cost = (sVal.price * q / 1000);
 
-        if(userBalance < cost) return alert("Balance kam hai! Recharge karein.");
-        if(!confirm(`Kya aap ₹${cost} ka order lagana chahte hain?`)) return;
+        if(!mobile || !link) return alert("Pehle Number aur Link daalein!");
+        if(currentBalance < cost) return alert("Balance nahi hai! Admin se contact karein.");
 
-        const btn = document.getElementById("buyBtn");
+        const btn = document.getElementById("orderBtn");
+        btn.innerText = "Processing... ⏳";
         btn.disabled = true;
-        btn.innerText = "Sending to StarOfSMM... ⏳";
 
         try {
             const res = await fetch(SCRIPT_URL, {
                 method: "POST",
                 body: JSON.stringify({
                     action: "placeOrder",
-                    mobile: currentUser,
-                    serviceID: service.id,
+                    mobile: mobile,
+                    serviceID: sVal.id,
                     link: link,
-                    quantity: qty,
+                    quantity: q,
                     price: cost
                 })
             });
             const result = await res.json();
             if(result.msg === "Success") {
-                alert("✅ Order Successful! ID: " + result.data);
-                location.reload(); 
+                alert("✅ Done! Order ID: " + result.data);
+                fetchBalance(); // Balance refresh
             } else {
-                alert("❌ API Error: " + result.msg);
-                btn.disabled = false;
+                alert("Error: " + result.msg);
             }
-        } catch(e) { alert("Error!"); btn.disabled = false; }
+        } catch(e) { alert("API Error!"); }
+        btn.innerText = "Order with Wallet";
+        btn.disabled = false;
     }
 </script>
 </body>
