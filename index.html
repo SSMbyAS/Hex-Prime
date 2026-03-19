@@ -81,8 +81,8 @@
 <a href="https://wa.me/917388720012" class="float-wa" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 <script>
-    // Aapka Diya Hua Naya SCRIPT_URL
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyiswDLWgaSzHPO2WEly92eyaYRGs4hL6ZHlJhdCriOOrViHl-XYS4RoA7wsbHsBydJpQ/exec";
+    // Aapka Update kiya hua Naya SCRIPT_URL
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz5X_B8qqh8GxY-uq1xGxb3DcPQ4c82ZgLxJh0HqjJVhPucfS7r2aB-QDMGuUUy-ZxhmA/exec";
 
     const services = {
         "insta_followers": [
@@ -174,7 +174,7 @@
             alert("✅ Order Placed Successfully!");
             location.reload();
         } catch (e) {
-            alert("Error! Check connection.");
+            alert("Error! Backend check karein.");
             btn.disabled = false;
         }
     }
@@ -209,7 +209,10 @@
                 try {
                     const r = await fetch(`${SCRIPT_URL}?action=getStatus&utr=${order.utr}`);
                     const d = await r.json();
-                    if (d.status) order.status = d.status;
+                    if (d.status) {
+                        // Backend se jo spelling aaye wahi dikhao
+                        order.status = d.status;
+                    }
                 } catch (e) { console.log("Sync error"); }
             }
         }
