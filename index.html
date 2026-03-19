@@ -3,166 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMMbyAS - Professional</title>
+    <title>SMMbyAS - Professional Panel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --bg: #1a2236; --card: #252f48; --primary: #38bdf8; --text: #ffffff; --text-dim: #94a3b8; --border: #334155; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 70px; }
+        :root { --bg: #0f172a; --card: #1e293b; --primary: #38bdf8; --accent: #22c55e; --text: #f8fafc; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; padding-bottom: 80px; }
         
-        /* Navigation Logic */
-        .page { display: none; padding: 15px; }
-        .page.active { display: block; }
+        .header { text-align: center; padding: 20px 0; border-bottom: 1px solid #334155; margin-bottom: 20px; }
+        .logo { font-size: 24px; font-weight: 900; color: var(--primary); letter-spacing: 1px; }
 
-        /* Header Stats */
-        .stats-card { background: white; color: #1a2236; border-radius: 15px; padding: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .live-badge { background: #dcfce7; color: #166534; padding: 2px 10px; border-radius: 20px; font-size: 10px; font-weight: bold; }
-
-        /* Quick Action Grid */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .action-box { background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 12px; text-align: left; }
-        .action-box i { font-size: 24px; color: var(--primary); margin-bottom: 10px; }
-        .action-box h4 { margin: 5px 0; font-size: 15px; }
-        .action-box p { font-size: 11px; color: var(--text-dim); margin: 0; }
-
-        /* Bottom Navbar */
-        .nav-bar { position: fixed; bottom: 0; width: 100%; background: var(--card); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid var(--border); }
-        .nav-btn { color: var(--text-dim); text-align: center; font-size: 11px; cursor: pointer; border:none; background:none; }
-        .nav-btn.active { color: var(--primary); }
-        .nav-btn i { display: block; font-size: 20px; margin-bottom: 4px; }
-
-        /* Services List */
-        .search-bar { width: 100%; padding: 12px; border-radius: 10px; background: var(--card); border: 1px solid var(--border); color: white; margin-bottom: 15px; box-sizing: border-box; }
-        .service-row { background: var(--card); padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border); }
-
-        /* Order Packages */
-        .pkg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .pkg-card { background: var(--card); padding: 15px; border-radius: 10px; border: 2px solid var(--border); text-align: left; cursor: pointer; }
-        .pkg-card.selected { border-color: var(--primary); background: rgba(56, 189, 248, 0.1); }
-
-        /* Payment UI */
-        .payment-box { background: var(--card); padding: 20px; border-radius: 15px; text-align: center; border: 1px solid var(--border); }
-        .qr-img { width: 180px; border: 4px solid white; border-radius: 8px; margin: 15px 0; }
+        .card { background: var(--card); border-radius: 15px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); border: 1px solid #334155; max-width: 500px; margin: auto; }
         
-        /* Notice & FAQ */
-        .notice { background: rgba(234, 179, 8, 0.1); border-left: 4px solid #eab308; padding: 15px; border-radius: 8px; font-size: 12px; color: #fbbf24; margin-bottom: 15px; }
+        label { display: block; margin: 15px 0 5px; font-size: 13px; color: #94a3b8; font-weight: bold; text-transform: uppercase; }
+        input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; font-size: 15px; outline: none; }
+        
+        .price-tag { background: rgba(56, 189, 248, 0.1); color: var(--primary); padding: 15px; border-radius: 10px; text-align: center; font-size: 24px; font-weight: 800; margin: 20px 0; border: 1px dashed var(--primary); }
+        
+        .qr-section { text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #334155; display: none; }
+        .qr-img { width: 200px; border: 5px solid white; border-radius: 10px; margin: 10px 0; }
+        
+        .btn-order { width: 100%; background: var(--accent); color: white; border: none; padding: 15px; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-order:disabled { background: #64748b; cursor: not-allowed; }
+
+        /* Floating WhatsApp */
+        .float-wa { position: fixed; bottom: 20px; right: 20px; background: #25d366; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; color: white; text-decoration: none; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 1000; }
     </style>
 </head>
 <body>
 
-<div id="home" class="page active">
-    <div class="stats-card">
-        <div>
-            <p style="margin:0; font-size:11px; font-weight:bold; color:#64748b;">TOTAL ORDERS DELIVERED</p>
-            <h2 style="margin:5px 0; font-size:28px;">149</h2>
-        </div>
-        <span class="live-badge">LIVE</span>
-    </div>
-    
-    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-        <button style="flex:1; background:#22c55e; border:none; padding:10px; border-radius:8px; color:white;"><i class="fab fa-whatsapp"></i> WhatsApp</button>
-        <button style="flex:1; background:#0ea5e9; border:none; padding:10px; border-radius:8px; color:white;"><i class="fab fa-telegram"></i> Telegram</button>
-    </div>
-
-    <div class="grid">
-        <div class="action-box" onclick="showPage('services')"><i class="fas fa-shopping-cart"></i><h4>Place Order</h4><p>Insta & YouTube</p></div>
-        <div class="action-box"><i class="fas fa-award"></i><h4>Reseller</h4><p>Login Panel</p></div>
-        <div class="action-box" onclick="showPage('support')"><i class="fas fa-comment-dots"></i><h4>Support</h4><p>WhatsApp Chat</p></div>
-        <div class="action-box" onclick="showPage('orders')"><i class="fas fa-clock"></i><h4>My Orders</h4><p>Order History</p></div>
-    </div>
-
-    <div class="notice">⚠️ Agar aapke order mein koi bhi problem aati hai, toh aapki payment 1/2 Ghante mein return ho jayegi.</div>
+<div class="header">
+    <div class="logo">SMMbyAS</div>
+    <p style="font-size: 12px; color: #94a3b8;">Fast & Trusted Services</p>
 </div>
 
-<div id="services" class="page">
-    <h2>Services</h2>
-    <input type="text" class="search-bar" placeholder="Search services...">
-    <div class="service-row" onclick="openOrder('Instagram Views', 1)">
-        <span><i class="fas fa-eye" style="color:#ec4899"></i> Instagram Views</span>
-        <i class="fas fa-chevron-right" style="color:var(--text-dim)"></i>
-    </div>
-    <div class="service-row">
-        <span><i class="fas fa-heart" style="color:#ef4444"></i> Instagram Likes</span>
-        <i class="fas fa-chevron-right"></i>
-    </div>
-</div>
+<div class="card">
+    <label><i class="fas fa-link"></i> Target Link</label>
+    <input type="text" id="targetLink" placeholder="Paste Video/Profile Link here...">
 
-<div id="order-form" class="page">
-    <div onclick="showPage('services')" style="margin-bottom:20px;"><i class="fas fa-arrow-left"></i> Place Order</div>
-    <div class="action-box" style="margin-bottom:20px; border:none; background:#2d3748;">
-        <h3 id="order-title">Instagram Views</h3>
-        <p>Instagram</p>
-    </div>
-    <label style="font-size:12px; color:var(--text-dim);">TARGET LINK</label>
-    <input type="text" id="link" class="search-bar" placeholder="Paste your link here...">
-    
-    <label style="font-size:12px; color:var(--text-dim); margin-top:15px; display:block;">SELECT PACKAGE</label>
-    <div class="pkg-grid">
-        <div class="pkg-card" onclick="selectPkg(this, 1)"><h4>1k Views</h4><p>1,000 units</p><b>₹1</b></div>
-        <div class="pkg-card" onclick="selectPkg(this, 4)"><h4>10k Views</h4><p>10,000 units</p><b>₹4</b></div>
-        <div class="pkg-card" onclick="selectPkg(this, 30)"><h4>100k Views</h4><p>100k units</p><b>₹30</b></div>
-    </div>
-    <button onclick="showPage('payment')" style="width:100%; padding:15px; background:var(--primary); border:none; border-radius:10px; color:white; font-weight:bold; margin-top:20px;">Proceed to Payment</button>
-</div>
+    <label><i class="fas fa-list"></i> Category</label>
+    <select id="categorySelect" onchange="updateServices()">
+        <option value="">-- Select Category --</option>
+        <option value="insta">Instagram Services ❤️</option>
+        <option value="yt">YouTube Services 🎬</option>
+    </select>
 
-<div id="payment" class="page">
-    <div onclick="showPage('order-form')"><i class="fas fa-arrow-left"></i> Payment</div>
-    <div class="payment-box" style="margin-top:20px;">
-        <p>Total: <b style="color:var(--primary); font-size:24px;">₹<span id="pay-amt">1</span></b></p>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=7388720012@fam" class="qr-img">
-        <p style="font-size:13px; color:var(--primary);">7388720012@fam</p>
-        <input type="text" class="search-bar" placeholder="Enter 12-digit UTR number">
-        <button class="btn-order" onclick="alert('Order Submitted!')" style="width:100%; padding:15px; background:#22c55e; border:none; border-radius:10px; color:white; font-weight:bold;">Confirm Payment</button>
+    <label><i class="fas fa-box-open"></i> Package</label>
+    <select id="serviceSelect" onchange="updatePriceDisplay()">
+        <option value="">Choose Category First</option>
+    </select>
+
+    <div class="price-tag" id="priceDisplay">₹0.00</div>
+
+    <button class="btn-order" id="payBtn" onclick="showPayment()">Pay & Place Order</button>
+
+    <div id="qrSection" class="qr-section">
+        <p style="color: #facc15; font-weight: bold;">Scan to Pay: ₹<span id="finalAmt">0</span></p>
+        <img src="" id="qrImg" class="qr-img">
+        <p style="font-size: 12px; margin-bottom: 15px;">UPI: 7388720012@fam</p>
+        
+        <label>Enter 12-Digit UTR Number</label>
+        <input type="number" id="utrInput" placeholder="Enter UPI Ref No. (12 Digits)">
+        <button class="btn-order" style="background: #38bdf8; margin-top: 15px;" id="confirmBtn" onclick="submitToSheet()">Confirm Payment</button>
     </div>
 </div>
 
-<div id="orders" class="page">
-    <h2>My Orders <span style="background:var(--primary); padding:2px 8px; border-radius:50%; font-size:12px;">5</span></h2>
-    <div class="service-row" style="flex-direction:column; align-items:flex-start;">
-        <div style="display:flex; justify-content:space-between; width:100%;"><span style="color:var(--primary)">1k Views</span><span style="font-size:10px; color:var(--text-dim)">18/3/2026</span></div>
-        <p style="font-size:10px; color:var(--primary); margin:5px 0;">https://instagram.com/reel/...</p>
-        <div style="display:flex; justify-content:space-between; width:100%; font-weight:bold;"><span>₹1</span><span style="color:#22c55e">Pending</span></div>
-    </div>
-</div>
-
-<div id="support" class="page">
-    <h2>Support</h2>
-    <div class="service-row"><span><i class="fab fa-whatsapp"></i> WhatsApp Support</span><i class="fas fa-external-link-alt"></i></div>
-    <div class="service-row"><span><i class="fab fa-telegram"></i> Telegram Channel</span><i class="fas fa-external-link-alt"></i></div>
-    <h3>FAQ</h3>
-    <div class="notice" style="background:var(--card); color:white; border-left-color:var(--primary);">
-        <b>1. Order kab start hoga?</b><br>Order 0-30 minute mein start ho jata hai.
-    </div>
-</div>
-
-<div class="nav-bar">
-    <button class="nav-btn active" onclick="showPage('home')"><i class="fas fa-home"></i>Home</button>
-    <button class="nav-btn" onclick="showPage('services')"><i class="fas fa-list"></i>Services</button>
-    <button class="nav-btn" onclick="showPage('orders')"><i class="fas fa-clock"></i>Orders</button>
-    <button class="nav-btn" onclick="showPage('support')"><i class="fas fa-user"></i>Support</button>
-</div>
+<a href="https://wa.me/917388720012" class="float-wa" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 <script>
-    function showPage(id) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
+    const services = {
+        "insta": [
+            { name: "Instagram 10k Views", price: 4 },
+            { name: "Instagram 1k Likes", price: 10 },
+            { name: "Instagram 1k Followers", price: 36 },
+            { name: "Instagram 1k Shares", price: 2 }
+        ],
+        "yt": [
+            { name: "YouTube 100 Subs", price: 180 },
+            { name: "YouTube 1k Views", price: 60 },
+            { name: "YouTube 1k Likes", price: 8 }
+        ]
+    };
+
+    function updateServices() {
+        const cat = document.getElementById("categorySelect").value;
+        const sSelect = document.getElementById("serviceSelect");
+        sSelect.innerHTML = "";
         
-        // Update nav active state
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        // (Isme logic aur improve ho sakta hai button click match ke liye)
+        if (cat && services[cat]) {
+            services[cat].forEach(s => {
+                let opt = document.createElement("option");
+                opt.value = JSON.stringify(s);
+                opt.text = `${s.name} - ₹${s.price}`;
+                sSelect.add(opt);
+            });
+        } else {
+            sSelect.add(new Option("Choose Category First", ""));
+        }
+        updatePriceDisplay();
     }
 
-    function openOrder(name, price) {
-        document.getElementById('order-title').innerText = name;
-        showPage('order-form');
+    function updatePriceDisplay() {
+        const val = document.getElementById("serviceSelect").value;
+        const display = document.getElementById("priceDisplay");
+        if (val) {
+            const s = JSON.parse(val);
+            display.innerText = "₹" + s.price;
+            document.getElementById("finalAmt").innerText = s.price;
+        } else {
+            display.innerText = "₹0.00";
+        }
     }
 
-    function selectPkg(el, price) {
-        document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('selected'));
-        el.classList.add('selected');
-        document.getElementById('pay-amt').innerText = price;
+    function showPayment() {
+        const link = document.getElementById("targetLink").value;
+        const service = document.getElementById("serviceSelect").value;
+        if (!link || !service) return alert("Pehle Link aur Service chuno!");
+
+        const s = JSON.parse(service);
+        const upi = `upi://pay?pa=7388720012@fam&am=${s.price}&cu=INR&tn=Order_SMMbyAS`;
+        document.getElementById("qrImg").src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upi)}`;
+        
+        document.getElementById("qrSection").style.display = "block";
+        document.getElementById("payBtn").style.display = "none";
+    }
+
+    async function submitToSheet() {
+        const utr = document.getElementById("utrInput").value;
+        const link = document.getElementById("targetLink").value;
+        const serviceVal = JSON.parse(document.getElementById("serviceSelect").value);
+        const btn = document.getElementById("confirmBtn");
+
+        if (utr.length !== 12) {
+            alert("❌ Galat UTR! PhonePe/GPay se 12-digit ka UPI Ref No daalo.");
+            return;
+        }
+
+        btn.innerText = "Processing... ⏳";
+        btn.disabled = true;
+
+        const scriptURL = "https://script.google.com/macros/s/AKfycbyiswDLWgaSzHPO2WEly92eyaYRGs4hL6ZHlJhdCriOOrViHl-XYS4RoA7wsbHsBydJpQ/exec";
+
+        try {
+            await fetch(scriptURL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    link: link,
+                    utr: utr,
+                    service: serviceVal.name,
+                    price: serviceVal.price
+                })
+            });
+
+            alert("✅ Order Successful! 30 mins me check karke start kar diya jayega.");
+            location.reload();
+        } catch (e) {
+            alert("Error! Please contact support.");
+            btn.disabled = false;
+            btn.innerText = "Confirm Payment";
+        }
     }
 </script>
 
 </body>
 </html>
-
