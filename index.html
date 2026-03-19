@@ -3,225 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMMbyAS - Ultimate Panel</title>
+    <title>SMMbyAS - Wallet Panel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --bg: #0f172a; --card: #1e293b; --primary: #38bdf8; --accent: #22c55e; --error: #ef4444; --text: #f8fafc; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; padding-bottom: 30px; }
+        :root { --bg: #0f172a; --card: #1e293b; --primary: #38bdf8; --accent: #22c55e; --text: #f8fafc; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; }
         .container { max-width: 500px; margin: auto; }
-        .header { text-align: center; padding: 20px 0; }
-        .logo { font-size: 28px; font-weight: 900; color: var(--primary); text-transform: uppercase; }
-        .card { background: var(--card); border-radius: 15px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); border: 1px solid #334155; margin-bottom: 20px; }
-        label { display: block; margin: 15px 0 5px; font-size: 12px; color: #94a3b8; font-weight: bold; }
-        input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; font-size: 15px; outline: none; margin-bottom: 10px; }
-        .price-tag { background: rgba(56, 189, 248, 0.1); color: var(--primary); padding: 15px; border-radius: 10px; text-align: center; font-size: 26px; font-weight: 800; margin: 15px 0; border: 1px dashed var(--primary); }
-        .btn-main { width: 100%; background: var(--primary); color: white; border: none; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-main:disabled { opacity: 0.6; }
-        .qr-section { text-align: center; display: none; padding-top: 20px; border-top: 1px solid #334155; }
-        .qr-img { width: 180px; border: 4px solid white; border-radius: 10px; margin: 10px 0; }
-        .history-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .refresh-btn { background: none; border: 1px solid var(--primary); color: var(--primary); padding: 5px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; }
-        .order-item { background: #0f172a; padding: 12px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid #facc15; }
-        .status-success { border-left-color: var(--accent) !important; }
-        .status-rejected { border-left-color: var(--error) !important; }
-        .float-wa { position: fixed; bottom: 20px; right: 20px; background: #25d366; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 25px; color: white; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1000; }
+        
+        /* Wallet Header */
+        .wallet-card { background: linear-gradient(135deg, #38bdf8, #1d4ed8); padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .balance-amt { font-size: 32px; font-weight: 900; margin: 10px 0; }
+        .add-fund-btn { background: white; color: #1d4ed8; border: none; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 13px; }
+
+        .card { background: var(--card); border-radius: 15px; padding: 20px; border: 1px solid #334155; margin-bottom: 20px; }
+        label { display: block; margin: 10px 0 5px; font-size: 12px; color: #94a3b8; font-weight: bold; }
+        input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; margin-bottom: 10px; }
+        .btn-buy { width: 100%; background: var(--accent); color: white; border: none; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        
+        /* Modal for adding funds */
+        #fundModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1001; justify-content:center; align-items:center; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header">
-        <div class="logo">SMMbyAS</div>
-        <p style="color: #94a3b8; font-size: 13px;">Fast & Trusted Services</p>
+    <div class="wallet-card">
+        <p style="margin:0; font-size:14px; opacity:0.9;">Available Balance</p>
+        <div class="balance-amt">₹<span id="userBalance">0.00</span></div>
+        <button class="add-fund-btn" onclick="openFundModal()"><i class="fas fa-plus"></i> Add Funds</button>
     </div>
 
     <div class="card">
-        <label><i class="fas fa-link"></i> TARGET LINK</label>
-        <input type="text" id="targetLink" placeholder="Paste Profile or Video Link">
+        <label>TARGET LINK</label>
+        <input type="text" id="targetLink" placeholder="https://instagram.com/...">
 
-        <label><i class="fas fa-layer-group"></i> CATEGORY</label>
-        <select id="categorySelect" onchange="updateServices()">
-            <option value="">-- Choose Category --</option>
-            <option value="insta_followers">Instagram Followers 👥</option>
-            <option value="insta_likes_views">Instagram Likes/Views ❤️</option>
-            <option value="yt_services">YouTube Services 🎬</option>
+        <label>SELECT SERVICE</label>
+        <select id="serviceSelect" onchange="updatePriceDisplay()">
+            <option value="">-- Choose Package --</option>
+            <option value='{"name":"1k Views","price":4}'>Instagram 1k Views - ₹4</option>
+            <option value='{"name":"1k Followers","price":35}'>Instagram 1k Followers - ₹35</option>
         </select>
 
-        <label><i class="fas fa-box"></i> PACKAGE</label>
-        <select id="serviceSelect" onchange="updatePrice()">
-            <option value="">Choose category first</option>
-        </select>
-
-        <div class="price-tag" id="priceDisplay">₹0.00</div>
-
-        <button class="btn-main" id="payBtn" onclick="showPayment()">Proceed to Payment</button>
-
-        <div id="qrSection" class="qr-section">
-            <p style="font-weight: bold; color: #facc15;">Pay Exactly: ₹<span id="finalAmt">0</span></p>
-            <img src="" id="qrImg" class="qr-img">
-            <p style="font-size: 11px; color: #94a3b8;">UPI ID: 7388720012@fam</p>
-            
-            <label>ENTER 12-DIGIT UTR / REF NO.</label>
-            <input type="number" id="utrInput" placeholder="Ex: 4056XXXXXXXX">
-            <p style="font-size: 10px; color: var(--error); margin-bottom: 10px;">*Fake UTR will lead to permanent ban.</p>
-            
-            <button class="btn-main" style="background: var(--accent);" id="confirmBtn" onclick="submitToSheet()">Submit Order</button>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="history-title">
-            <span style="font-weight: bold;"><i class="fas fa-history"></i> My Orders</span>
-            <button class="refresh-btn" onclick="refreshStatus()"><i class="fas fa-sync-alt"></i> Refresh Status</button>
-        </div>
-        <div id="orderList"></div>
+        <div id="priceMsg" style="text-align:center; margin:10px; color:#38bdf8; font-weight:bold;"></div>
+        <button class="btn-buy" onclick="buyService()">Place Order (Pay from Wallet)</button>
     </div>
 </div>
 
-<a href="https://wa.me/917388720012" class="float-wa" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<div id="fundModal">
+    <div class="card" style="width:90%; max-width:400px; position:relative;">
+        <button onclick="closeFundModal()" style="position:absolute; right:15px; top:15px; background:none; border:none; color:white; font-size:20px;">×</button>
+        <h3>Add Money to Wallet</h3>
+        <p style="font-size:12px; color:#94a3b8;">Pay via UPI and enter UTR to update balance.</p>
+        <center>
+            <img id="qrImg" style="width:150px; border:5px solid white; border-radius:10px; margin:10px;">
+        </center>
+        <input type="number" id="fundAmt" placeholder="Enter Amount (₹)" oninput="updateQR()">
+        <input type="number" id="fundUTR" placeholder="Enter 12-digit UTR">
+        <button class="btn-buy" style="background:#38bdf8" onclick="submitFund()">Submit Fund Request</button>
+    </div>
+</div>
 
 <script>
-    // Aapka Update kiya hua Naya SCRIPT_URL
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz5X_B8qqh8GxY-uq1xGxb3DcPQ4c82ZgLxJh0HqjJVhPucfS7r2aB-QDMGuUUy-ZxhmA/exec";
+    const SCRIPT_URL = "AAPKA_NEW_SCRIPT_URL_HERE";
+    
+    // Page load par Local Balance check karein
+    let balance = parseFloat(localStorage.getItem("wallet_bal") || "0");
+    document.getElementById("userBalance").innerText = balance.toFixed(2);
 
-    const services = {
-        "insta_followers": [
-            { name: "100 Instagram Followers", price: 5 },
-            { name: "500 Instagram Followers", price: 20 },
-            { name: "1,000 Instagram Followers", price: 35 },
-            { name: "5,000 Instagram Followers", price: 160 }
-        ],
-        "insta_likes_views": [
-            { name: "1,000 Instagram Reels Views", price: 2 },
-            { name: "5,000 Instagram Reels Views", price: 8 },
-            { name: "100 Instagram Post Likes", price: 3 },
-            { name: "1,000 Instagram Post Likes", price: 15 }
-        ],
-        "yt_services": [
-            { name: "1,000 YouTube Views", price: 70 },
-            { name: "100 YouTube Subscribers", price: 150 },
-            { name: "1,000 YouTube Subscribers", price: 1200 }
-        ]
-    };
-
-    function updateServices() {
-        const cat = document.getElementById("categorySelect").value;
-        const sSelect = document.getElementById("serviceSelect");
-        sSelect.innerHTML = '<option value="">-- Select Package --</option>';
-        if (cat && services[cat]) {
-            services[cat].forEach(s => {
-                let opt = document.createElement("option");
-                opt.value = JSON.stringify(s);
-                opt.text = `${s.name} - ₹${s.price}`;
-                sSelect.add(opt);
-            });
-        }
-        updatePrice();
-    }
-
-    function updatePrice() {
-        const val = document.getElementById("serviceSelect").value;
-        const display = document.getElementById("priceDisplay");
-        if (val) {
-            const s = JSON.parse(val);
-            display.innerText = "₹" + s.price;
-            document.getElementById("finalAmt").innerText = s.price;
-        } else {
-            display.innerText = "₹0.00";
+    function updatePriceDisplay() {
+        const s = document.getElementById("serviceSelect").value;
+        if(s) {
+            const data = JSON.parse(s);
+            document.getElementById("priceMsg").innerText = "Price: ₹" + data.price;
         }
     }
 
-    function isFakeUTR(utr) {
-        const fakeList = ["123456789012", "000000000000", "111111111111", "999999999999"];
-        return fakeList.includes(utr) || /^(\d)\1{11}$/.test(utr);
+    function openFundModal() { document.getElementById("fundModal").style.display = "flex"; }
+    function closeFundModal() { document.getElementById("fundModal").style.display = "none"; }
+
+    function updateQR() {
+        const amt = document.getElementById("fundAmt").value;
+        const upi = `upi://pay?pa=7388720012@fam&am=${amt}&cu=INR`;
+        document.getElementById("qrImg").src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(upi)}`;
     }
 
-    function showPayment() {
-        const link = document.getElementById("targetLink").value.trim();
-        const service = document.getElementById("serviceSelect").value;
-        if (!link || !service) return alert("Pehle Link aur Service select karein!");
-        const s = JSON.parse(service);
-        const upi = `upi://pay?pa=7388720012@fam&am=${s.price}&cu=INR&tn=Order_SMMbyAS`;
-        document.getElementById("qrImg").src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upi)}`;
-        document.getElementById("qrSection").style.display = "block";
-        document.getElementById("payBtn").style.display = "none";
+    async function submitFund() {
+        const amt = document.getElementById("fundAmt").value;
+        const utr = document.getElementById("fundUTR").value;
+        if(!amt || utr.length < 12) return alert("Pehle Sahi Amount aur UTR daalein!");
+
+        // Request Sheet par bhejenge (Aapko admin panel se approve karna hoga)
+        alert("✅ Fund request sent! After verification, balance will be added.");
+        closeFundModal();
     }
 
-    async function submitToSheet() {
-        const utr = document.getElementById("utrInput").value.trim();
-        const link = document.getElementById("targetLink").value.trim();
-        const sVal = JSON.parse(document.getElementById("serviceSelect").value);
-        const btn = document.getElementById("confirmBtn");
-
-        if (utr.length !== 12 || isFakeUTR(utr)) {
-            return alert("❌ Invalid UTR! Please enter 12-digit real Transaction ID.");
-        }
-
-        btn.innerText = "Saving Order... ⏳";
-        btn.disabled = true;
-
-        try {
-            await fetch(SCRIPT_URL, {
-                method: "POST",
-                mode: "no-cors",
-                body: JSON.stringify({ link: link, utr: utr, service: sVal.name, price: sVal.price })
-            });
-
-            let myOrders = JSON.parse(localStorage.getItem("smm_orders") || "[]");
-            myOrders.unshift({ utr: utr, service: sVal.name, status: "Pending", date: new Date().toLocaleString(), link: link });
-            localStorage.setItem("smm_orders", JSON.stringify(myOrders));
-
-            alert("✅ Order Placed Successfully!");
-            location.reload();
-        } catch (e) {
-            alert("Error! Backend check karein.");
-            btn.disabled = false;
-        }
-    }
-
-    function displayHistory() {
-        const list = document.getElementById("orderList");
-        let myOrders = JSON.parse(localStorage.getItem("smm_orders") || "[]");
-        if (myOrders.length === 0) {
-            list.innerHTML = '<p style="color:#94a3b8; font-size:12px; text-align:center;">No history found.</p>';
+    async function buyService() {
+        const link = document.getElementById("targetLink").value;
+        const sVal = document.getElementById("serviceSelect").value;
+        
+        if(!link || !sVal) return alert("Details fill karein!");
+        
+        const service = JSON.parse(sVal);
+        
+        // 1. Balance Check
+        if(balance < service.price) {
+            alert("❌ Recharge Maang Raha Hai! (Low Balance)");
             return;
         }
-        list.innerHTML = myOrders.map(o => `
-            <div class="order-item ${o.status === 'Success' ? 'status-success' : (o.status === 'Rejected' ? 'status-rejected' : '')}">
-                <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:bold;">
-                    <span>${o.service}</span>
-                    <span style="color:${o.status === 'Success' ? '#22c55e' : (o.status === 'Rejected' ? '#ef4444' : '#facc15')}">${o.status}</span>
-                </div>
-                <div style="font-size:10px; color:#94a3b8; margin-top:5px;">UTR: ${o.utr}</div>
-                <div style="font-size:10px; color:#64748b;">${o.date}</div>
-            </div>
-        `).join('');
-    }
 
-    async function refreshStatus() {
-        let myOrders = JSON.parse(localStorage.getItem("smm_orders") || "[]");
-        if (myOrders.length === 0) return;
+        // 2. Paisa Kato
+        balance -= service.price;
+        localStorage.setItem("wallet_bal", balance);
+        document.getElementById("userBalance").innerText = balance.toFixed(2);
+
+        // 3. Order Sheet mein bhejo
+        alert(`✅ Order Placed! ₹${service.price} aapke wallet se kat gaye. Bacha hua: ₹${balance.toFixed(2)}`);
         
-        alert("Checking Status... ⏳");
-
-        for (let order of myOrders) {
-            if (order.status === "Pending") {
-                try {
-                    const r = await fetch(`${SCRIPT_URL}?action=getStatus&utr=${order.utr}`);
-                    const d = await r.json();
-                    if (d.status) {
-                        // Backend se jo spelling aaye wahi dikhao
-                        order.status = d.status;
-                    }
-                } catch (e) { console.log("Sync error"); }
-            }
-        }
-        localStorage.setItem("smm_orders", JSON.stringify(myOrders));
-        displayHistory();
-        alert("Status Updated!");
+        // Yahan fetch() call karke sheet mein data bhej dein
     }
-
-    window.onload = displayHistory;
 </script>
 </body>
 </html>
