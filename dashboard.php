@@ -1,74 +1,79 @@
 <?php
 session_start();
+
 if(!isset($_SESSION['user'])){
     header("Location: index.php");
+    exit();
 }
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard</title>
 
 <style>
-body{
-    font-family:Arial;
-    background:#f3f4f8;
-    margin:0;
+body {
+    font-family: Arial;
+    background: #f3f4f8;
+    margin: 0;
 }
 
 /* Header */
-.header{
-    background:#fff;
-    padding:15px;
-    font-size:20px;
-    font-weight:bold;
-    color:#6c63ff;
+.header {
+    background: #fff;
+    padding: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #6c63ff;
+    text-align: center;
 }
 
-/* Card */
-.card{
-    background:#fff;
-    margin:10px;
-    padding:15px;
-    border-radius:12px;
-    box-shadow:0 0 5px rgba(0,0,0,0.1);
+/* Cards */
+.card {
+    background: #fff;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
 
-/* Icons row */
-.icons{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    padding:10px;
+/* Icons */
+.icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
 }
 
-.icon{
-    background:#fff;
-    padding:10px;
-    border-radius:10px;
-    width:50px;
-    text-align:center;
-    box-shadow:0 0 3px rgba(0,0,0,0.1);
+.icon {
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    width: 50px;
+    text-align: center;
+    box-shadow: 0 0 3px rgba(0,0,0,0.1);
 }
 
 /* Form */
-input, select{
-    width:100%;
-    padding:10px;
-    margin-top:10px;
-    border-radius:8px;
-    border:1px solid #ddd;
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
 }
 
-button{
-    width:100%;
-    padding:12px;
-    background:#6c63ff;
-    color:#fff;
-    border:none;
-    border-radius:8px;
-    margin-top:10px;
+button {
+    width: 100%;
+    padding: 12px;
+    background: #6c63ff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    margin-top: 10px;
 }
 </style>
 
@@ -77,7 +82,7 @@ button{
 <body>
 
 <div class="header">
-MR SMM STYLE PANEL
+ssmbyas Panel
 </div>
 
 <!-- Stats -->
@@ -128,6 +133,7 @@ MR SMM STYLE PANEL
 ⚠️ Please Read the Description<br>
 - Link: TikTok Username<br>
 - Speed: Fast<br>
+- Start: 0-10 Minutes<br>
 </p>
 
 <label>Link</label>
