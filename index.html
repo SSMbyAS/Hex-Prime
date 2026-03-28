@@ -3,118 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSMBYAS | API Connected</title>
+    <title>SSMBYAS | Official Panel</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #0061ff; --bg: #f8fafc; --card: #ffffff; }
+        :root { --primary: #0061ff; --bg: #f4f7fe; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: var(--bg); color: #1e293b; padding-bottom: 80px; }
-        
-        /* UI Components */
-        .header { background: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); sticky; top: 0; z-index: 100; }
+        body { background: var(--bg); padding-bottom: 80px; }
+        .header { background: #fff; padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); sticky; top: 0; z-index: 100; }
         .logo { font-weight: 800; color: var(--primary); font-size: 20px; }
         .screen { display: none; padding: 15px; max-width: 480px; margin: 0 auto; }
-        .active { display: block; animation: slideUp 0.3s ease; }
-        @keyframes slideUp { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
-
-        .card { background: var(--card); padding: 20px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-bottom: 15px; border: 1px solid #edf2f7; }
-        .inp { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 12px; outline: none; font-size: 14px; }
+        .active { display: block; }
+        .card { background: #fff; padding: 20px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-bottom: 15px; }
+        .inp { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 12px; outline: none; }
         .btn { width: 100%; padding: 15px; border-radius: 12px; border: none; background: var(--primary); color: white; font-weight: 700; cursor: pointer; }
-
-        /* Admin Specific */
-        .admin-badge { background: #fee2e2; color: #ef4444; padding: 5px 10px; border-radius: 8px; font-size: 12px; font-weight: 700; }
         .nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; left: 50%; transform: translateX(-50%); background: #fff; display: flex; border-top: 1px solid #eee; padding: 10px 0; }
         .nav-item { flex: 1; text-align: center; color: #94a3b8; font-size: 11px; cursor: pointer; }
         .nav-item.active { color: var(--primary); }
         .nav-item i { font-size: 22px; display: block; }
+        .hist-item { font-size: 11px; padding: 8px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <div class="logo">SSMBYAS</div>
-        <div id="user-display" style="font-size: 12px; font-weight: 600;">Guest</div>
+        <div id="u-top" style="font-size:12px; font-weight:600;">Guest</div>
     </div>
 
     <div id="login-screen" class="screen active">
         <div class="card">
-            <h2>Sign In</h2>
-            <p style="font-size:12px; color:#64748b; margin-bottom:20px;">Apne account mein login karein</p>
+            <h2>Login</h2>
             <input type="text" id="l-user" class="inp" placeholder="Username">
             <input type="password" id="l-pass" class="inp" placeholder="Password">
-            <button class="btn" onclick="handleLogin()">Login</button>
+            <button class="btn" onclick="handleLogin()">Sign In</button>
         </div>
     </div>
 
     <div id="dash-screen" class="screen">
         <div class="card" style="background: var(--primary); color: white;">
-            <small>Available Balance</small>
+            <small>My Balance</small>
             <h1 id="u-bal">₹0.00</h1>
-            <div style="margin-top:5px; font-size:12px; opacity:0.8;">Total Spent: <span id="u-spent">₹0</span></div>
         </div>
 
         <div class="card">
             <h3>New Order</h3>
-            <label style="font-size:11px; color:#94a3b8;">Package</label>
             <select id="srv-select" class="inp" onchange="updatePrice()"></select>
-            
-            <input type="text" id="order-link" class="inp" placeholder="Instagram Video/Reel Link">
-            <input type="number" id="order-qty" class="inp" placeholder="Quantity (Min 100)" oninput="updatePrice()">
-            
-            <div style="background:#f1f5f9; padding:15px; border-radius:10px; text-align:center; margin-bottom:15px;">
-                <small>You will pay</small>
-                <h2 id="total-price" style="color:var(--primary)">₹0.00</h2>
-            </div>
-            <button class="btn" onclick="placeOrder()">Place Order</button>
+            <input type="text" id="order-link" class="inp" placeholder="Instagram Link">
+            <input type="number" id="order-qty" class="inp" placeholder="Quantity" oninput="updatePrice()">
+            <p style="text-align:center; font-weight:700; margin-bottom:10px;">Total: <span id="total-price">₹0.00</span></p>
+            <button class="btn" id="order-btn" onclick="placeOrder()">Place Order</button>
+        </div>
+
+        <div class="card">
+            <h4>Payment History</h4>
+            <div id="pay-history"></div>
         </div>
     </div>
 
     <div id="admin-screen" class="screen">
         <div class="card">
-            <h3 style="color:red;">Admin Controls</h3>
-            <hr style="margin:10px 0; opacity:0.1;">
+            <h3 style="color:red">Master Settings</h3>
+            <label>Extra Margin (₹ per 1000):</label>
+            <input type="number" id="adm-margin" class="inp" onchange="saveMargin()">
             
-            <h4>Set Profit Margin (Global)</h4>
-            <p style="font-size:11px; color:gray;">Jitna ₹ yahan likhenge, har service ka rate utna badh jayega.</p>
-            <input type="number" id="admin-margin" class="inp" placeholder="Extra Charge (e.g. 1.00)" onchange="saveMargin()">
-            
-            <h4 style="margin-top:20px;">Add Balance to User</h4>
-            <input type="text" id="adm-target-user" class="inp" placeholder="Username">
-            <input type="number" id="adm-amt" class="inp" placeholder="Amount to Add">
-            <button class="btn" onclick="adminAddMoney()" style="background:#05cd99">Add Cash</button>
+            <h4>Add User Funds</h4>
+            <input type="text" id="adm-target" class="inp" placeholder="Username">
+            <input type="number" id="adm-amt" class="inp" placeholder="Amount">
+            <button class="btn" onclick="adminAddMoney()" style="background:green">Add Balance</button>
         </div>
-
         <div class="card">
-            <h4>User Secrets (Login Details)</h4>
-            <div id="user-database-list" style="font-size:12px; margin-top:10px;"></div>
+            <h4>User Database</h4>
+            <div id="user-list" style="font-size:12px;"></div>
         </div>
     </div>
 
     <div class="nav" id="main-nav" style="display:none;">
-        <div class="nav-item active" onclick="showScreen('dash-screen', this)"><i class="fa-solid fa-cart-plus"></i>Order</div>
-        <div class="nav-item" onclick="showScreen('admin-screen', this)" id="admin-nav-btn" style="display:none;"><i class="fa-solid fa-user-shield"></i>Admin</div>
-        <div class="nav-item" onclick="location.reload()"><i class="fa-solid fa-right-from-bracket"></i>Exit</div>
+        <div class="nav-item active" onclick="showScreen('dash-screen', this)"><i class="fa-solid fa-house"></i>Home</div>
+        <div class="nav-item" id="adm-nav" style="display:none;" onclick="showScreen('admin-screen', this)"><i class="fa-solid fa-shield"></i>Admin</div>
+        <div class="nav-item" onclick="location.reload()"><i class="fa-solid fa-lock"></i>Logout</div>
     </div>
 
     <script>
         const API_KEY = "ed122fb4bd6c98f731ef008ea3f6372d2994ca5e";
         const API_URL = "https://starofsmm.com/api/v2";
+        // Proxy to bypass CORS error
+        const PROXY = "https://corsproxy.io/?";
 
-        let db = JSON.parse(localStorage.getItem('ssmbyas_final')) || {
-            'suhel': {pass:'7388', email:'suhel@gmail.com', bal:5000, spent:0},
-            'config': {margin: 1.0} // Default profit ₹1.00
+        let db = JSON.parse(localStorage.getItem('ssmbyas_v3')) || {
+            'suhel': {pass:'7388', bal:5000, history:[]},
+            'config': {margin: 1.0}
         };
         let currentUser = null;
 
-        // Aapki di gayi Services ka data
         const services = [
-            {id: 9259, name: "Insta Views [0-2H]", rate: 0.0647},
-            {id: 8871, name: "Insta Views [0-45M]", rate: 0.0671},
-            {id: 5740, name: "Insta Views [Cancel Enable]", rate: 0.0912},
-            {id: 5880, name: "Insta Reel Views [Super Cheap]", rate: 0.0952},
-            {id: 5882, name: "Insta Views [Non-Drop]", rate: 0.0958},
-            {id: 5884, name: "Insta Views [Emergency]", rate: 0.1024}
+            {id: 9259, name: "Insta Views [Fast]", rate: 0.0647},
+            {id: 5740, name: "Insta Views [Refill]", rate: 0.0912},
+            {id: 5882, name: "Insta Views [Non-Drop]", rate: 0.0958}
         ];
 
         function handleLogin() {
@@ -122,104 +107,115 @@
             let p = document.getElementById('l-pass').value;
             if(db[u] && db[u].pass === p) {
                 currentUser = u;
-                initApp();
-            } else { alert("User ya Password ghalat hai!"); }
+                startApp();
+            } else { alert("Wrong details!"); }
         }
 
-        function initApp() {
+        function startApp() {
             document.getElementById('login-screen').classList.remove('active');
             document.getElementById('dash-screen').classList.add('active');
             document.getElementById('main-nav').style.display = 'flex';
-            document.getElementById('user-display').innerText = currentUser;
+            document.getElementById('u-top').innerText = currentUser;
+            if(currentUser === 'suhel') document.getElementById('adm-nav').style.display = 'block';
             
-            if(currentUser === 'suhel') document.getElementById('admin-nav-btn').style.display = 'block';
-            
-            // Populate Services with PROFIT
-            let margin = db.config.margin || 0;
-            let options = services.map(s => {
-                let finalRate = s.rate + margin; // API Rate + Admin Profit
-                return `<option value="${s.id}|${finalRate}">${s.name} - ₹${finalRate.toFixed(4)}</option>`;
+            loadServices();
+            updateUI();
+        }
+
+        function loadServices() {
+            let m = db.config.margin;
+            let html = services.map(s => {
+                let r = s.rate + m;
+                return `<option value="${s.id}|${r}">${s.name} - ₹${r.toFixed(3)}</option>`;
             }).join('');
-            document.getElementById('srv-select').innerHTML = options;
-            document.getElementById('admin-margin').value = margin;
-            updateStats();
-            loadUserDataForAdmin();
+            document.getElementById('srv-select').innerHTML = html;
+            document.getElementById('adm-margin').value = m;
         }
 
         function updatePrice() {
             let val = document.getElementById('srv-select').value.split('|');
             let rate = parseFloat(val[1]);
             let qty = document.getElementById('order-qty').value || 0;
-            let total = (rate / 1000) * qty;
-            document.getElementById('total-price').innerText = "₹" + total.toFixed(3);
+            document.getElementById('total-price').innerText = "₹" + ((rate/1000)*qty).toFixed(3);
         }
 
-        function saveMargin() {
-            let m = parseFloat(document.getElementById('admin-margin').value);
-            db.config.margin = m;
-            save();
-            alert("Margin updated! Services refresh karne ke liye restart karein.");
-            initApp();
+        async function placeOrder() {
+            let val = document.getElementById('srv-select').value.split('|');
+            let qty = document.getElementById('order-qty').value;
+            let link = document.getElementById('order-link').value;
+            let cost = (parseFloat(val[1])/1000)*qty;
+
+            if(db[currentUser].bal < cost) return alert("Low Balance!");
+            
+            document.getElementById('order-btn').innerText = "Processing...";
+
+            // REAL API CALL WITH PROXY
+            try {
+                const response = await fetch(PROXY + API_URL + `?key=${API_KEY}&action=add&service=${val[0]}&link=${link}&quantity=${qty}`);
+                const data = await response.json();
+
+                if(data.order) {
+                    db[currentUser].bal -= cost;
+                    db[currentUser].history.push({type:'Order', amt:cost, date: new Date().toLocaleDateString()});
+                    save();
+                    alert("Order Placed! ID: " + data.order);
+                    updateUI();
+                } else {
+                    alert("API Error: " + (data.error || "Unknown"));
+                }
+            } catch (err) {
+                alert("Connection Error. Check Internet.");
+            }
+            document.getElementById('order-btn').innerText = "Place Order";
         }
 
         function adminAddMoney() {
-            let target = document.getElementById('adm-target-user').value.toLowerCase();
-            let amt = parseFloat(document.getElementById('adm-amt').value);
-            if(db[target]) {
-                db[target].bal += amt;
+            let t = document.getElementById('adm-target').value.toLowerCase();
+            let a = parseFloat(document.getElementById('adm-amt').value);
+            if(db[t]) {
+                db[t].bal += a;
+                db[t].history.push({type:'Deposit', amt:a, date: new Date().toLocaleDateString()});
                 save();
-                alert(`₹${amt} added to ${target}`);
-                loadUserDataForAdmin();
-            } else { alert("User nahi mila!"); }
-        }
-
-        function loadUserDataForAdmin() {
-            let html = "";
-            for(let u in db) {
-                if(u !== 'config') {
-                    html += `<div style="padding:8px; border-bottom:1px solid #eee;">
-                        <b>User:</b> ${u} | <b>Pass:</b> ${db[u].pass} <br>
-                        <b>Gmail:</b> ${db[u].email} | <b>Bal:</b> ₹${db[u].bal.toFixed(2)}
-                    </div>`;
-                }
+                alert("Added!");
+                loadUsers();
             }
-            document.getElementById('user-database-list').innerHTML = html;
         }
 
-        function placeOrder() {
-            let val = document.getElementById('srv-select').value.split('|');
-            let s_id = val[0];
-            let rate = parseFloat(val[1]);
-            let qty = document.getElementById('order-qty').value;
-            let link = document.getElementById('order-link').value;
-            let cost = (rate / 1000) * qty;
-
-            if(db[currentUser].bal < cost) return alert("Paisa kam hai!");
-            
-            // API CALL SIMULATION (Since we are in frontend)
-            // Asali call ke liye fetch() use hota hai, lekin browser security (CORS) ki wajah se 
-            // API direct browser se nahi chalegi. Isliye order ko database mein save kar rahe hain.
-            db[currentUser].bal -= cost;
-            db[currentUser].spent += cost;
+        function saveMargin() {
+            db.config.margin = parseFloat(document.getElementById('adm-margin').value);
             save();
-            updateStats();
-            alert("Order Successful! ID: " + Math.floor(Math.random()*999999));
+            loadServices();
+            alert("Margin Saved!");
         }
 
-        function updateStats() {
+        function updateUI() {
             document.getElementById('u-bal').innerText = "₹" + db[currentUser].bal.toFixed(2);
-            document.getElementById('u-spent').innerText = "₹" + db[currentUser].spent.toFixed(2);
+            let histHtml = db[currentUser].history.map(h => `
+                <div class="hist-item">
+                    <span>${h.type} (${h.date})</span>
+                    <span style="color:${h.type==='Deposit'?'green':'red'}">${h.type==='Deposit'?'+':'-'}₹${h.amt}</span>
+                </div>
+            `).join('');
+            document.getElementById('pay-history').innerHTML = histHtml || "No history.";
         }
 
         function showScreen(id, el) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            if(el) el.classList.add('active');
+            el.classList.add('active');
+            if(id === 'admin-screen') loadUsers();
         }
 
-        function save() { localStorage.setItem('ssmbyas_final', JSON.stringify(db)); }
+        function loadUsers() {
+            let html = "";
+            for(let u in db) {
+                if(u!=='config') html += `<div>${u} - ₹${db[u].bal.toFixed(2)} (Pass: ${db[u].pass})</div>`;
+            }
+            document.getElementById('user-list').innerHTML = html;
+        }
+
+        function save() { localStorage.setItem('ssmbyas_v3', JSON.stringify(db)); }
     </script>
 </body>
 </html>
-
