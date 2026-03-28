@@ -3,36 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSMBYAS | All-in-One SMM</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>SSMBYAS | Ultimate SMM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #0061ff; --bg: #f4f7fe; --success: #05cd99; }
+        :root { --primary: #0061ff; --bg: #f4f7fe; --card: #ffffff; --text: #1e293b; --success: #05cd99; --pending: #ffb020; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: var(--bg); padding-bottom: 80px; color: #1e293b; }
+        body { background: var(--bg); color: var(--text); padding-bottom: 80px; }
 
-        .header { background: #fff; padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        /* UI Shell */
+        .header { background: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
         .logo { font-weight: 800; color: var(--primary); font-size: 22px; }
-        .screen { display: none; padding: 15px; max-width: 480px; margin: 0 auto; }
-        .active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+        .screen { display: none; padding: 15px; max-width: 500px; margin: 0 auto; }
+        .active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);} }
 
-        .card { background: #fff; padding: 20px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-bottom: 15px; border: 1px solid #eee; }
+        /* Cards & Inputs */
+        .card { background: var(--card); padding: 20px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-bottom: 15px; border: 1px solid #eee; }
         .inp, select { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 12px; outline: none; background: #f9faff; font-size: 14px; }
-        .btn { width: 100%; padding: 15px; border-radius: 12px; border: none; background: var(--primary); color: white; font-weight: 700; cursor: pointer; }
-        
-        /* Stats Styling */
-        .stat-container { display: flex; gap: 10px; margin-bottom: 15px; }
-        .stat-box { flex: 1; padding: 15px; border-radius: 15px; color: white; text-align: center; }
-        .bg-blue { background: linear-gradient(135deg, #0061ff, #60efff); }
-        .bg-purple { background: linear-gradient(135deg, #696eff, #f8acff); }
+        .btn { width: 100%; padding: 15px; border-radius: 12px; border: none; background: var(--primary); color: white; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn:active { transform: scale(0.98); }
 
-        .nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; left: 50%; transform: translateX(-50%); background: #fff; display: flex; padding: 10px 0; border-top: 1px solid #eee; z-index: 1000; }
+        /* Stats Cards */
+        .stat-grid { display: flex; gap: 10px; margin-bottom: 15px; }
+        .stat-box { flex: 1; padding: 15px; border-radius: 18px; color: white; text-align: center; }
+        .bg-grad-1 { background: linear-gradient(135deg, #0061ff, #60efff); }
+        .bg-grad-2 { background: linear-gradient(135deg, #696eff, #f8acff); }
+
+        /* History Tables */
+        .hist-item { background: #fff; padding: 12px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f1f5f9; font-size: 12px; }
+        .status { padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; color: white; float: right; }
+        .status-Pending { background: var(--pending); }
+        .status-Completed { background: var(--success); }
+
+        /* Navigation */
+        .nav { position: fixed; bottom: 0; width: 100%; max-width: 500px; left: 50%; transform: translateX(-50%); background: #fff; display: flex; padding: 12px 0; border-top: 1px solid #eee; z-index: 1000; box-shadow: 0 -5px 15px rgba(0,0,0,0.03); }
         .nav-item { flex: 1; text-align: center; color: #94a3b8; font-size: 11px; cursor: pointer; }
         .nav-item.active { color: var(--primary); font-weight: 700; }
         .nav-item i { font-size: 22px; display: block; margin-bottom: 4px; }
 
-        label { font-size: 12px; font-weight: 600; color: #64748b; margin-left: 5px; display: block; margin-bottom: 5px; }
+        label { font-size: 11px; font-weight: 600; color: #64748b; margin: 0 0 5px 5px; display: block; }
     </style>
 </head>
 <body>
@@ -43,87 +53,92 @@
     </div>
 
     <div id="auth-screen" class="screen active">
-        <div class="card">
-            <h2 style="margin-bottom: 15px;">Login</h2>
+        <div class="card" id="login-box">
+            <h2 style="margin-bottom:15px;">Sign In</h2>
             <input type="text" id="l-user" class="inp" placeholder="Username">
             <input type="password" id="l-pass" class="inp" placeholder="Password">
-            <button class="btn" onclick="login()">Sign In</button>
+            <button class="btn" onclick="login()">Login</button>
+            <p onclick="toggleAuth(true)" style="text-align:center; margin-top:15px; font-size:12px; color:var(--primary); cursor:pointer;">Naya account banayein?</p>
+        </div>
+        <div class="card" id="reg-box" style="display:none;">
+            <h2>Register</h2>
+            <input type="text" id="r-user" class="inp" placeholder="Username">
+            <input type="number" id="r-mobile" class="inp" placeholder="Mobile Number">
+            <input type="password" id="r-pass" class="inp" placeholder="Password">
+            <input type="password" id="r-pass2" class="inp" placeholder="Confirm Password">
+            <button class="btn" onclick="register()">Create Account</button>
+            <p onclick="toggleAuth(false)" style="text-align:center; margin-top:15px; font-size:12px; color:var(--primary); cursor:pointer;">Pahle se account hai? Login</p>
         </div>
     </div>
 
     <div id="dash-screen" class="screen">
-        <div class="stat-container">
-            <div class="stat-box bg-blue">
-                <small>Available Balance</small>
+        <div class="stat-grid">
+            <div class="stat-box bg-grad-1">
+                <small>Balance</small>
                 <h2 id="u-bal">₹0.00</h2>
             </div>
-            <div class="stat-box bg-purple">
+            <div class="stat-box bg-grad-2">
                 <small>Total Spent</small>
                 <h2 id="u-spent">₹0.00</h2>
             </div>
         </div>
-
         <div class="card">
             <h3>Place New Order</h3>
-            <hr style="margin: 10px 0; opacity: 0.1;">
-            
             <label>Category</label>
-            <select id="cat-select" onchange="loadServices()">
-                <option value="ig_views">Instagram Views</option>
-                <option value="ig_followers">Instagram Followers</option>
-                <option value="ig_likes">Instagram Likes</option>
-                <option value="yt_subs">YouTube Subscribers</option>
-                <option value="yt_views">YouTube Views</option>
-                <option value="tg_members">Telegram Members</option>
-            </select>
-
-            <label>Service Package</label>
+            <select id="cat-select" onchange="loadServices()"></select>
+            <label>Service</label>
             <select id="srv-select" onchange="calcPrice()"></select>
-
-            <label>Link</label>
-            <input type="text" id="o-link" class="inp" placeholder="https://instagram.com/p/...">
-
-            <label>Quantity</label>
-            <input type="number" id="o-qty" class="inp" placeholder="Min 100" oninput="calcPrice()">
-
-            <div style="background:#f1f5f9; padding:10px; border-radius:10px; text-align:center; margin-bottom:15px;">
-                <small>Amount to Pay</small>
-                <h2 id="o-charge" style="color:var(--primary)">₹0.00</h2>
+            <input type="text" id="o-link" class="inp" placeholder="Link/URL">
+            <input type="number" id="o-qty" class="inp" placeholder="Quantity" oninput="calcPrice()">
+            <div style="background:#f1f5f9; padding:15px; border-radius:12px; text-align:center; margin-bottom:15px;">
+                <small>Charge</small><h2 id="o-charge" style="color:var(--primary)">₹0.00</h2>
             </div>
-            <button class="btn" id="order-btn" onclick="placeOrder()">Place Order Now</button>
+            <button class="btn" id="order-btn" onclick="placeOrder()">Place Order</button>
         </div>
     </div>
 
     <div id="fund-screen" class="screen">
         <div class="card">
-            <h3>Add Money</h3>
-            <div style="text-align:center; margin: 15px 0;">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=suhel@upi&pn=SSMBYAS" style="width:180px; border: 5px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                <p style="font-weight:700; margin-top:10px;">UPI ID: suhel@upi</p>
+            <h3>Add Funds</h3>
+            <div style="text-align:center; margin:15px 0;">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=suhel@upi&pn=SSMBYAS" style="width:160px; border-radius:10px;">
+                <p style="font-size:12px; margin-top:5px; font-weight:700;">UPI ID: suhel@upi</p>
             </div>
-            <input type="number" id="f-amt" class="inp" placeholder="Enter Amount">
-            <input type="text" id="f-utr" class="inp" placeholder="UTR / Transaction ID">
-            <button class="btn" onclick="submitFund()" style="background:var(--success)">Submit Payment</button>
+            <input type="number" id="f-amt" class="inp" placeholder="Amount">
+            <input type="text" id="f-utr" class="inp" placeholder="12-Digit UTR Number">
+            <button class="btn" onclick="submitFund()" style="background:var(--success)">Submit Request</button>
         </div>
+        <h4>Payment History</h4>
+        <div id="fund-hist-list" style="margin-top:10px;"></div>
+    </div>
+
+    <div id="hist-screen" class="screen">
+        <div class="card" style="background: #eef2ff;">
+            <h3>Refer & Earn</h3>
+            <p style="font-size:12px; color:#4338ca;">Apne doston ko refer karein aur 5% commission payein.</p>
+            <div id="ref-link" style="padding:10px; background:#fff; border-radius:8px; font-size:11px; margin-top:10px; border:1px dashed #4338ca;">Loading...</div>
+        </div>
+        <h4>Order History</h4>
+        <div id="order-hist-list" style="margin-top:10px;"></div>
     </div>
 
     <div id="admin-screen" class="screen">
-        <div class="card" style="border-top: 5px solid red;">
-            <h3 style="color:red">Pending Approvals</h3>
-            <div id="admin-req-list"></div>
-        </div>
-        <div class="card">
-            <h4>Global Margin (₹)</h4>
-            <input type="number" id="adm-margin" class="inp" value="1.0" onchange="saveMargin()">
-            <p style="font-size:10px; color:gray;">Ye amount har 1000 quantity par extra judega.</p>
+        <div class="card" style="border-top:5px solid red;">
+            <h3>Admin Panel</h3>
+            <label>Profit Margin (₹ per 1k)</label>
+            <input type="number" id="adm-margin" class="inp" onchange="saveMargin()">
+            
+            <h4>Fund Requests</h4>
+            <div id="adm-req-list"></div>
         </div>
     </div>
 
     <div class="nav" id="bot-nav" style="display:none;">
-        <div class="nav-item active" onclick="showScreen('dash-screen', this)"><i class="fa-solid fa-rocket"></i>Home</div>
+        <div class="nav-item active" onclick="showScreen('dash-screen', this)"><i class="fa-solid fa-cart-plus"></i>Order</div>
         <div class="nav-item" onclick="showScreen('fund-screen', this)"><i class="fa-solid fa-wallet"></i>Funds</div>
-        <div id="nav-adm" class="nav-item" style="display:none;" onclick="showScreen('admin-screen', this)"><i class="fa-solid fa-user-gear"></i>Admin</div>
-        <div class="nav-item" onclick="location.reload()"><i class="fa-solid fa-right-from-bracket"></i>Exit</div>
+        <div class="nav-item" onclick="showScreen('hist-screen', this)"><i class="fa-solid fa-clock-rotate-left"></i>History</div>
+        <div id="nav-adm" class="nav-item" style="display:none;" onclick="showScreen('admin-screen', this)"><i class="fa-solid fa-shield"></i>Admin</div>
+        <div class="nav-item" onclick="location.reload()"><i class="fa-solid fa-power-off"></i>Exit</div>
     </div>
 
     <script>
@@ -131,42 +146,70 @@
         const API_URL = "https://starofsmm.com/api/v2";
         const PROXY = "https://corsproxy.io/?";
 
-        let db = JSON.parse(localStorage.getItem('ssmbyas_v5')) || {
-            'suhel': {pass:'7388', bal:5000, spent:0},
+        let db = JSON.parse(localStorage.getItem('ssmbyas_vFinal')) || {
+            'suhel': {pass:'7388', bal:5000, spent:0, mobile:'7388000000', orders:[], funds:[]},
             'requests': [],
             'config': {margin: 1.0}
         };
         let currentUser = null;
 
-        // --- Multi-Service Data ---
-        const services = {
-            ig_views: [
-                {id: 9259, name: "IG Views [Fast]", rate: 0.0647},
-                {id: 5740, name: "IG Views [Cancel Enable]", rate: 0.0912}
+        const categories = {
+            "Instagram": [
+                {id: 9259, name: "Insta Views", rate: 0.06},
+                {id: 5740, name: "Insta Followers Drip", rate: 40.0},
+                {id: 5882, name: "Insta Followers Non-Drop", rate: 60.0},
+                {id: 111, name: "Insta Likes", rate: 5.0},
+                {id: 112, name: "Insta Story Views", rate: 2.0},
+                {id: 113, name: "Insta Channel Members", rate: 90.0},
+                {id: 114, name: "Insta Comment", rate: 15.0},
+                {id: 115, name: "Insta Verified Comment (High)", rate: 500.0}
             ],
-            ig_followers: [
-                {id: 1234, name: "IG Followers [Non-Drop]", rate: 45.50},
-                {id: 1235, name: "IG Followers [Cheap]", rate: 30.20}
+            "YouTube": [
+                {id: 221, name: "YT Subs (No Guarantee)", rate: 150.0},
+                {id: 222, name: "YT Subs (Lifetime Refill)", rate: 450.0},
+                {id: 223, name: "YT Likes Refill", rate: 10.0},
+                {id: 224, name: "YT Watch Time (High)", rate: 1200.0},
+                {id: 225, name: "YT Views", rate: 80.0}
             ],
-            ig_likes: [
-                {id: 2234, name: "IG Likes [HQ]", rate: 5.20}
+            "Facebook": [
+                {id: 331, name: "FB Post Likes", rate: 5.0},
+                {id: 332, name: "FB Followers", rate: 45.0},
+                {id: 333, name: "FB Shares", rate: 10.0}
             ],
-            yt_subs: [
-                {id: 3345, name: "YT Subscribers [Lifetime]", rate: 450.00}
+            "Telegram": [
+                {id: 441, name: "TG Members", rate: 35.0},
+                {id: 442, name: "TG Views + Reaction", rate: 5.0}
             ],
-            yt_views: [
-                {id: 3346, name: "YT Views [Non-Drop]", rate: 80.00}
-            ],
-            tg_members: [
-                {id: 4456, name: "Telegram Channel Members", rate: 40.00}
+            "WhatsApp": [
+                {id: 551, name: "WA Channel Members", rate: 200.0},
+                {id: 552, name: "WA Poll Votes", rate: 50.0}
             ]
         };
+
+        function toggleAuth(isReg) {
+            document.getElementById('login-box').style.display = isReg ? 'none' : 'block';
+            document.getElementById('reg-box').style.display = isReg ? 'block' : 'none';
+        }
+
+        function register() {
+            let u = document.getElementById('r-user').value.toLowerCase().trim();
+            let m = document.getElementById('r-mobile').value;
+            let p1 = document.getElementById('r-pass').value;
+            let p2 = document.getElementById('r-pass2').value;
+
+            if(p1 !== p2) return alert("Password match nahi hua!");
+            if(!u || !m || !p1) return alert("Sab bhariye!");
+            if(db[u]) return alert("Username exist karta hai!");
+
+            db[u] = {pass:p1, mobile:m, bal:0, spent:0, orders:[], funds:[]};
+            save(); alert("Success! Login karein."); toggleAuth(false);
+        }
 
         function login() {
             let u = document.getElementById('l-user').value.toLowerCase();
             let p = document.getElementById('l-pass').value;
             if(db[u] && db[u].pass === p) { currentUser = u; startApp(); }
-            else alert("Invalid Login!");
+            else alert("Ghalat details!");
         }
 
         function startApp() {
@@ -175,6 +218,11 @@
             document.getElementById('bot-nav').style.display = 'flex';
             document.getElementById('u-top').innerText = currentUser;
             if(currentUser === 'suhel') document.getElementById('nav-adm').style.display = 'block';
+            
+            // Load Categories
+            let catHtml = Object.keys(categories).map(c => `<option value="${c}">${c}</option>`).join('');
+            document.getElementById('cat-select').innerHTML = catHtml;
+            document.getElementById('ref-link').innerText = "https://ssmbyas.com/ref?user=" + currentUser;
             loadServices();
             updateUI();
         }
@@ -182,8 +230,7 @@
         function loadServices() {
             let cat = document.getElementById('cat-select').value;
             let m = db.config.margin;
-            let list = services[cat] || [];
-            let html = list.map(s => {
+            let html = categories[cat].map(s => {
                 let r = s.rate + m;
                 return `<option value="${s.id}|${r}">${s.name} - ₹${r.toFixed(2)}</option>`;
             }).join('');
@@ -204,70 +251,81 @@
             let link = document.getElementById('o-link').value;
             let cost = (parseFloat(val[1])/1000) * qty;
 
-            if(db[currentUser].bal < cost) return alert("Insufficent Balance!");
+            if(db[currentUser].bal < cost) return alert("No Balance!");
             
-            document.getElementById('order-btn').innerText = "Connecting API...";
+            document.getElementById('order-btn').innerText = "Processing...";
             try {
                 const res = await fetch(PROXY + API_URL + `?key=${API_KEY}&action=add&service=${val[0]}&link=${link}&quantity=${qty}`);
                 const data = await res.json();
                 if(data.order) {
                     db[currentUser].bal -= cost;
-                    db[currentUser].spent += cost; // ADDED SPENT BALANCE LOGIC
-                    save(); alert("Order Placed! ID: " + data.order);
+                    db[currentUser].spent += cost;
+                    db[currentUser].orders.push({id: data.order, srv: val[0], amt: cost, date: new Date().toLocaleDateString()});
+                    save(); alert("Order Success! ID: " + data.order);
                     updateUI();
                 } else alert("API Error: " + data.error);
-            } catch(e) { alert("Network Error."); }
-            document.getElementById('order-btn').innerText = "Place Order Now";
+            } catch(e) { alert("Try Again."); }
+            document.getElementById('order-btn').innerText = "Place Order";
         }
 
         function submitFund() {
             let a = parseFloat(document.getElementById('f-amt').value);
             let u = document.getElementById('f-utr').value;
-            if(!a || u.length < 8) return alert("Sahi details bharein!");
-            db.requests.push({user: currentUser, amt: a, utr: u});
+            if(!a || u.length < 10) return alert("Details check karein!");
+            
+            let req = {user: currentUser, amt: a, utr: u, status: 'Pending', date: new Date().toLocaleDateString()};
+            db.requests.push(req);
+            db[currentUser].funds.push(req);
             save(); alert("Request Sent!");
-            showScreen('dash-screen');
+            updateUI();
         }
 
-        function approve(i) {
-            let r = db.requests[i];
-            db[r.user].bal += r.amt;
-            db.requests.splice(i, 1);
-            save(); alert("Funds Added!");
-            loadAdminData(); updateUI();
+        function approveFund(idx) {
+            let req = db.requests[idx];
+            db[req.user].bal += req.amt;
+            // Update user's personal history status
+            db[req.user].funds.forEach(f => { if(f.utr === req.utr) f.status = 'Completed'; });
+            db.requests.splice(idx, 1);
+            save(); alert("Approved!");
+            loadAdminData();
         }
 
         function updateUI() {
             document.getElementById('u-bal').innerText = "₹" + db[currentUser].bal.toFixed(2);
             document.getElementById('u-spent').innerText = "₹" + db[currentUser].spent.toFixed(2);
+            
+            // Funds History
+            let fHtml = db[currentUser].funds.map(f => `
+                <div class="hist-item">₹${f.amt} via UPI <span class="status status-${f.status}">${f.status}</span><br><small>UTR: ${f.utr}</small></div>
+            `).reverse().join('');
+            document.getElementById('fund-hist-list').innerHTML = fHtml || "No history";
+
+            // Order History
+            let oHtml = db[currentUser].orders.map(o => `
+                <div class="hist-item">Order ID: ${o.id} <span class="status status-Completed">Success</span><br><small>Spent: ₹${o.amt} (${o.date})</small></div>
+            `).reverse().join('');
+            document.getElementById('order-hist-list').innerHTML = oHtml || "No orders yet";
         }
 
         function showScreen(id, el) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            if(el) el.classList.add('active');
+            el.classList.add('active');
             if(id === 'admin-screen') loadAdminData();
         }
 
         function loadAdminData() {
             let html = db.requests.map((r, i) => `
-                <div style="padding:10px; border-bottom:1px solid #eee; font-size:12px;">
-                    User: ${r.user} | Amt: ₹${r.amt} | UTR: ${r.utr} <br>
-                    <button onclick="approve(${i})" style="background:green; color:white; border:none; padding:4px 8px; border-radius:4px; margin-top:5px;">Approve</button>
-                </div>
+                <div class="hist-item"><b>${r.user}</b> - ₹${r.amt}<br>UTR: ${r.utr}
+                <button onclick="approveFund(${i})" style="background:green; color:white; border:none; padding:4px; border-radius:4px; display:block; margin-top:5px;">Approve</button></div>
             `).join('');
-            document.getElementById('admin-req-list').innerHTML = html || "No pending requests.";
+            document.getElementById('adm-req-list').innerHTML = html || "No pending requests.";
             document.getElementById('adm-margin').value = db.config.margin;
         }
 
-        function saveMargin() {
-            db.config.margin = parseFloat(document.getElementById('adm-margin').value);
-            save(); alert("Global Price Updated!");
-            loadServices();
-        }
-
-        function save() { localStorage.setItem('ssmbyas_v5', JSON.stringify(db)); }
+        function saveMargin() { db.config.margin = parseFloat(document.getElementById('adm-margin').value); save(); loadServices(); }
+        function save() { localStorage.setItem('ssmbyas_vFinal', JSON.stringify(db)); }
     </script>
 </body>
 </html>
