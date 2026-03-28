@@ -3,60 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Growfam - Professional SMM</title>
+    <title>Growfam - Professional SMM Panel</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --blue: #0081ff; --bg: #f8fafc; --white: #ffffff; --gray: #94a3b8; }
         * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background: var(--bg); margin: 0; padding-bottom: 80px; }
-        .screen { display: none; max-width: 480px; margin: 0 auto; min-height: 100vh; background: white; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .screen { display: none; max-width: 480px; margin: 0 auto; min-height: 100vh; background: white; position: relative; box-shadow: 0 0 30px rgba(0,0,0,0.05); }
         .active { display: block; }
 
-        /* Dashboard Cards */
-        .card-row { padding: 15px; display: grid; grid-template-columns: 1fr; gap: 10px; }
+        /* --- LOGIN STYLE --- */
+        .login-bg { background: var(--blue); padding-top: 50px; text-align: center; }
+        .login-card { background: white; border-radius: 30px 30px 0 0; padding: 40px 20px; margin-top: 30px; min-height: 70vh; }
+        .login-input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 15px; outline: none; background: #f0f9ff; }
+
+        /* --- DASHBOARD STYLE --- */
+        .card-row { padding: 15px; display: grid; gap: 10px; }
         .stat-card { background: white; border: 1px solid #f1f5f9; padding: 15px; border-radius: 15px; display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
         .stat-icon { width: 45px; height: 45px; background: #eef6ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--blue); font-size: 20px; }
-        .stat-val { font-size: 18px; font-weight: 800; margin: 0; }
-        .stat-label { font-size: 11px; color: var(--gray); font-weight: 600; }
-
-        /* Service Icons Row */
         .cat-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 10px 20px; scrollbar-width: none; }
         .cat-icon { min-width: 50px; height: 50px; border: 1.5px solid #e2e8f0; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--gray); cursor: pointer; }
         .cat-icon.active-cat { border-color: var(--blue); color: var(--blue); background: #eef6ff; }
 
-        /* Inputs & Buttons */
-        .order-box { margin: 10px 15px; padding: 20px; border: 1px solid #f1f5f9; border-radius: 20px; }
-        .input-box { width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 15px; outline: none; font-size: 14px; }
-        .btn-blue { width: 100%; padding: 16px; border-radius: 14px; border: none; background: var(--blue); color: white; font-weight: 700; cursor: pointer; }
-
-        /* Bottom Nav */
-        .nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; background: #fff; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #eee; }
+        /* --- TABLE STYLE --- */
+        table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
+        th { background: #f8fafc; padding: 10px; text-align: left; color: var(--gray); }
+        td { padding: 12px 10px; border-bottom: 1px solid #f1f5f9; }
+        .badge { padding: 4px 8px; border-radius: 6px; color: white; font-weight: 700; font-size: 10px; }
+        .btn-blue { width: 100%; padding: 16px; border-radius: 14px; border: none; background: var(--blue); color: white; font-weight: 700; cursor: pointer; box-shadow: 0 8px 15px rgba(0,129,255,0.2); }
+        .nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; background: #fff; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #eee; z-index: 100; }
         .nav-item { text-align: center; color: var(--gray); font-size: 10px; font-weight: 700; cursor: pointer; flex: 1; }
         .nav-item.active { color: var(--blue); }
-        .nav-item i { font-size: 22px; margin-bottom: 4px; display: block; }
     </style>
 </head>
 <body>
 
-    <div id="user-panel" class="screen active">
+    <div id="login-screen" class="screen active login-bg">
+        <h1 style="color:white; margin:0;">GROWFAM</h1>
+        <p style="color:rgba(255,255,255,0.8);">Cheapest & Best SMM Panel</p>
+        <div class="login-card">
+            <h2 style="color:#444;">Welcome Back</h2>
+            <input type="text" id="l-user" class="login-input" placeholder="Username">
+            <input type="password" id="l-pass" class="login-input" placeholder="Password">
+            <button class="btn-blue" onclick="doLogin()">Login Now</button>
+            <img src="https://i.ibb.co/84xc5km1/rocket-girl-smm.png" style="width:80%; margin-top:30px; opacity:0.8;">
+        </div>
+    </div>
+
+    <div id="user-panel" class="screen">
         <div style="padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9;">
-            <b style="color:var(--blue); font-size:20px;">GROWFAM</b>
-            <i class="fa-solid fa-bars" onclick="showAdmin()"></i>
+            <b style="color:var(--blue); font-size:20px;">MRSMM.ORG</b>
+            <i class="fa-solid fa-bars" onclick="openAdmin()"></i>
         </div>
 
         <div class="card-row">
             <div class="stat-card">
-                <div class="stat-icon"><i class="fa-solid fa-list-check"></i></div>
-                <div><p class="stat-val">10973190</p><p class="stat-label">Panel orders</p></div>
-            </div>
-            <div class="stat-card">
                 <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
-                <div><p class="stat-val">₹<span id="u-bal">0.00</span></p><p class="stat-label">Account balance</p></div>
+                <div><p style="margin:0; font-weight:800;">₹<span id="u-bal">0.00</span></p><small style="color:var(--gray);">Balance</small></div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon"><i class="fa-solid fa-coins"></i></div>
-                <div><p class="stat-val">₹<span id="u-spent">0.00</span></p><p class="stat-label">Spent balance</p></div>
+                <div><p style="margin:0; font-weight:800;">₹<span id="u-spent">0.00</span></p><small style="color:var(--gray);">Spent</small></div>
             </div>
         </div>
 
@@ -64,76 +72,79 @@
             <div class="cat-icon active-cat" onclick="selCat('tiktok', this)"><i class="fa-brands fa-tiktok"></i></div>
             <div class="cat-icon" onclick="selCat('insta', this)"><i class="fa-brands fa-instagram"></i></div>
             <div class="cat-icon" onclick="selCat('youtube', this)"><i class="fa-brands fa-youtube"></i></div>
-            <div class="cat-icon" onclick="selCat('facebook', this)"><i class="fa-brands fa-facebook"></i></div>
             <div class="cat-icon" onclick="selCat('telegram', this)"><i class="fa-brands fa-telegram"></i></div>
         </div>
 
-        <div class="order-box">
-            <label style="font-size:11px; font-weight:700; color:var(--gray);">Category</label>
-            <select id="catSelect" class="input-box" onchange="updateServices()">
-                <option value="tiktok">TikTok Services</option>
-                <option value="insta">Instagram Services</option>
-                <option value="youtube">YouTube Services</option>
-            </select>
+        <div style="padding: 20px;">
+            <select id="srvSelect" class="login-input" onchange="calcPrice()"></select>
+            <input type="text" id="orderLink" class="login-input" placeholder="Paste Link Here">
+            <input type="number" id="orderQty" class="login-input" placeholder="Quantity" oninput="calcPrice()">
             
-            <label style="font-size:11px; font-weight:700; color:var(--gray);">Service</label>
-            <select id="srvSelect" class="input-box" onchange="calcPrice()"></select>
-            
-            <input type="text" id="orderLink" class="input-box" placeholder="Link">
-            <input type="number" id="orderQty" class="input-box" placeholder="Quantity" oninput="calcPrice()">
-
-            <div style="text-align:center; padding:10px;">
-                <small style="color:var(--gray);">Charge:</small>
-                <div style="font-size:24px; font-weight:800; color:var(--blue);" id="p-disp">₹0.00</div>
+            <div style="text-align:center; margin-bottom:15px;">
+                <small>Total Charge:</small>
+                <div style="font-size:28px; font-weight:800; color:var(--blue);" id="p-disp">₹0.00</div>
             </div>
             <button class="btn-blue" onclick="placeOrder()">Place Order</button>
         </div>
 
         <div class="nav">
-            <div class="nav-item active"><i class="fa-solid fa-cart-shopping"></i>New Order</div>
-            <div class="nav-item" onclick="alert('WhatsApp support se fund add karein!')"><i class="fa-solid fa-plus-circle"></i>Add Fund</div>
-            <div class="nav-item"><i class="fa-solid fa-history"></i>History</div>
+            <div class="nav-item active" onclick="toggleScreen('user-panel')"><i class="fa-solid fa-cart-shopping"></i>New Order</div>
+            <div class="nav-item" onclick="toggleScreen('history-screen')"><i class="fa-solid fa-history"></i>History</div>
+            <div class="nav-item" onclick="location.reload()"><i class="fa-solid fa-sign-out"></i>Logout</div>
         </div>
+    </div>
+
+    <div id="history-screen" class="screen">
+        <div style="padding:20px; background:var(--blue); color:white;"><h3>Order History</h3></div>
+        <table>
+            <thead><tr><th>ID</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody id="history-body"></tbody>
+        </table>
+        <button class="btn-blue" style="margin:20px; width:90%; background:#64748b;" onclick="toggleScreen('user-panel')">Back</button>
     </div>
 
     <div id="admin-panel" class="screen">
-        <div style="padding:20px; background:var(--blue); color:white;">
-            <h3>Admin Dashboard</h3>
-            <p>User Balance & Profit Control</p>
+        <div style="padding:20px; background:#333; color:white;"><h3>Admin Manager</h3></div>
+        <div style="padding:20px;">
+            <input type="text" id="target-user" class="login-input" placeholder="User Name">
+            <input type="number" id="fund-amt" class="login-input" placeholder="Amount (₹)">
+            <button class="btn-blue" onclick="manageFunds('add')" style="background:#28a745;">Add Fund</button>
+            <button class="btn-blue" onclick="manageFunds('del')" style="background:#dc3545; margin-top:10px;">Deduct Fund</button>
         </div>
-        <div class="order-box">
-            <h4>Manage User Funds</h4>
-            <input type="text" id="target-user" class="input-box" placeholder="Target Username">
-            <input type="number" id="fund-amount" class="input-box" placeholder="Amount (₹)">
-            <button class="btn-blue" style="background:#28a745;" onclick="manageFund('add')">Add Money ✅</button>
-            <button class="btn-blue" style="background:#dc3545; margin-top:10px;" onclick="manageFund('del')">Deduct Money ❌</button>
-        </div>
-        <button class="btn-blue" style="margin:20px; width:90%; background:#64748b;" onclick="toggleScreen('user-panel')">Back to Dashboard</button>
+        <button class="btn-blue" style="margin:20px; width:90%; background:#64748b;" onclick="toggleScreen('user-panel')">Close</button>
     </div>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('smm_db')) || { 'Suhel': {pass:'123', bal:1000, spent:0} };
-        let sessionUser = 'Suhel';
+        // CONFIG
+        const API_URL = "https://starofsmm.com/api/v2";
+        const API_KEY = "YOUR_API_KEY_HERE"; // Starofsmm se copy karein
         const PROFIT = 1.5; // 50% Profit
+        
+        let db = JSON.parse(localStorage.getItem('smm_db')) || { 'suhel': {pass:'123', bal:1000, spent:0, orders:[]} };
+        let sessionUser = null;
 
-        const services = {
-            'tiktok': [{n:'TikTok Followers', r:2}, {n:'TikTok Views', r:0.1}],
-            'insta': [{n:'Instagram Likes', r:5}, {n:'Instagram Followers', r:25}],
-            'youtube': [{n:'YouTube Subscribers', r:150}]
-        };
-
-        function selCat(cat, el) {
-            document.querySelectorAll('.cat-icon').forEach(i => i.classList.remove('active-cat'));
-            el.classList.add('active-cat');
-            document.getElementById('catSelect').value = cat;
-            updateServices();
+        function doLogin() {
+            let u = document.getElementById('l-user').value.toLowerCase();
+            let p = document.getElementById('l-pass').value;
+            if(db[u] && db[u].pass === p) { sessionUser = u; updateUI(); toggleScreen('user-panel'); }
+            else alert("Ghalat details!");
         }
 
-        function updateServices() {
-            let cat = document.getElementById('catSelect').value;
-            let srvSelect = document.getElementById('srvSelect');
-            srvSelect.innerHTML = services[cat].map(s => `<option value="${s.r * 85 * PROFIT}">${s.n} (₹${(s.r * 85 * PROFIT).toFixed(2)})</option>`).join('');
-            calcPrice();
+        function updateUI() {
+            document.getElementById('u-bal').innerText = db[sessionUser].bal.toFixed(2);
+            document.getElementById('u-spent').innerText = (db[sessionUser].spent || 0).toFixed(2);
+            loadServices();
+        }
+
+        async function loadServices() {
+            // Demo data (Asli API call yahan aayegi fetch se)
+            const demo = [
+                {id: 101, name: "Instagram Followers", rate: 0.50},
+                {id: 202, name: "TikTok Likes", rate: 0.10}
+            ];
+            document.getElementById('srvSelect').innerHTML = demo.map(s => 
+                `<option value="${s.rate * 85 * PROFIT}">${s.name} - ₹${(s.rate * 85 * PROFIT).toFixed(2)}</option>`
+            ).join('');
         }
 
         function calcPrice() {
@@ -142,26 +153,47 @@
             document.getElementById('p-disp').innerText = "₹" + ((rate/1000)*qty).toFixed(2);
         }
 
-        function manageFund(type) {
-            let user = document.getElementById('target-user').value.trim();
-            let amt = parseFloat(document.getElementById('fund-amount').value);
-            if(!db[user]) return alert("User not found!");
-            db[user].bal = (type === 'add') ? db[user].bal + amt : Math.max(0, db[user].bal - amt);
+        function placeOrder() {
+            let price = parseFloat(document.getElementById('p-disp').innerText.replace('₹',''));
+            if(db[sessionUser].bal < price) return alert("Balance kam hai!");
+            
+            let id = Math.floor(Math.random() * 99999);
+            db[sessionUser].bal -= price;
+            db[sessionUser].spent += price;
+            db[sessionUser].orders.push({id: id, status: 'Pending', date: new Date().toLocaleDateString()});
+            
             localStorage.setItem('smm_db', JSON.stringify(db));
-            alert("Updated!");
+            alert("Order Placed! ID: " + id);
             updateUI();
         }
 
-        function showAdmin() {
-            let pass = prompt("Enter Admin Password:");
-            if(pass === "suhel7388") toggleScreen('admin-panel');
+        function toggleScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if(id === 'history-screen') renderHistory();
         }
 
-        function toggleScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
-        function updateUI() { document.getElementById('u-bal').innerText = db[sessionUser].bal.toFixed(2); document.getElementById('u-spent').innerText = db[sessionUser].spent.toFixed(2); }
+        function renderHistory() {
+            let html = db[sessionUser].orders.map(o => `
+                <tr><td>${o.id}</td><td><b style="color:orange;">${o.status}</b></td>
+                <td><button onclick="alert('Cancelling...')" style="font-size:10px; background:red; color:white; border:none; padding:5px; border-radius:4px;">Cancel</button></td></tr>
+            `).join('');
+            document.getElementById('history-body').innerHTML = html || "<tr><td colspan='3'>No orders</td></tr>";
+        }
 
-        updateServices();
-        updateUI();
+        function openAdmin() {
+            let p = prompt("Admin Password:");
+            if(p === "suhel7388") toggleScreen('admin-panel');
+        }
+
+        function manageFunds(type) {
+            let u = document.getElementById('target-user').value.toLowerCase();
+            let a = parseFloat(document.getElementById('fund-amt').value);
+            if(!db[u]) return alert("User nahi mila!");
+            db[u].bal = (type === 'add') ? db[u].bal + a : Math.max(0, db[u].bal - a);
+            localStorage.setItem('smm_db', JSON.stringify(db));
+            alert("Done!");
+        }
     </script>
 </body>
 </html>
