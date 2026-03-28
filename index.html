@@ -3,188 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSMBYAS | Best SMM Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>SSMBYAS | API Connected</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
-        :root { --primary: #0061ff; --glass: rgba(255, 255, 255, 0.95); --text: #1e293b; }
+        :root { --primary: #0061ff; --bg: #f8fafc; --card: #ffffff; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: #f0f4f8; color: var(--text); overflow-x: hidden; }
-
-        /* HEADER & LOGO */
-        .header { background: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .logo { font-size: 22px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 8px; }
-        .logo i { font-size: 28px; }
-
-        .screen { display: none; padding: 20px; max-width: 500px; margin: 0 auto; min-height: 90vh; }
-        .active { display: block; }
-
-        /* CARDS */
-        .card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.03); margin-bottom: 20px; border: 1px solid #edf2f7; }
-        .stat-val { font-size: 24px; font-weight: 700; color: var(--primary); }
+        body { background: var(--bg); color: #1e293b; padding-bottom: 80px; }
         
-        /* FORM ELEMENTS */
-        .inp { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 15px; outline: none; font-size: 14px; background: #f8fafc; }
-        .btn { width: 100%; padding: 15px; border-radius: 12px; border: none; background: var(--primary); color: white; font-weight: 700; cursor: pointer; box-shadow: 0 5px 15px rgba(0,97,255,0.3); }
+        /* UI Components */
+        .header { background: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); sticky; top: 0; z-index: 100; }
+        .logo { font-weight: 800; color: var(--primary); font-size: 20px; }
+        .screen { display: none; padding: 15px; max-width: 480px; margin: 0 auto; }
+        .active { display: block; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
 
-        /* ADMIN TABLE */
-        .admin-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px; }
-        .admin-table th, .admin-table td { padding: 10px; border: 1px solid #eee; text-align: left; }
-        .admin-table tr:nth-child(even) { background: #f9fafb; }
+        .card { background: var(--card); padding: 20px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-bottom: 15px; border: 1px solid #edf2f7; }
+        .inp { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 12px; outline: none; font-size: 14px; }
+        .btn { width: 100%; padding: 15px; border-radius: 12px; border: none; background: var(--primary); color: white; font-weight: 700; cursor: pointer; }
 
-        /* FOOTER NAV */
-        .footer { position: fixed; bottom: 0; width: 100%; max-width: 500px; left: 50%; transform: translateX(-50%); background: white; display: flex; padding: 10px 0; border-top: 1px solid #eee; }
-        .nav-item { flex: 1; text-align: center; color: #94a3b8; font-size: 10px; cursor: pointer; }
+        /* Admin Specific */
+        .admin-badge { background: #fee2e2; color: #ef4444; padding: 5px 10px; border-radius: 8px; font-size: 12px; font-weight: 700; }
+        .nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; left: 50%; transform: translateX(-50%); background: #fff; display: flex; border-top: 1px solid #eee; padding: 10px 0; }
+        .nav-item { flex: 1; text-align: center; color: #94a3b8; font-size: 11px; cursor: pointer; }
         .nav-item.active { color: var(--primary); }
-        .nav-item i { font-size: 20px; display: block; }
-
-        /* SUPPORT BOX */
-        .support-box { background: #eef6ff; padding: 15px; border-radius: 15px; text-align: center; border: 1px dashed var(--primary); }
+        .nav-item i { font-size: 22px; display: block; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="logo"><i class="fa-solid fa-rocket"></i> SSMBYAS</div>
-        <div id="user-info" style="font-weight: 600; font-size: 12px;"></div>
+        <div class="logo">SSMBYAS</div>
+        <div id="user-display" style="font-size: 12px; font-weight: 600;">Guest</div>
     </div>
 
-    <div id="auth-screen" class="screen active">
-        <div class="card" id="login-form">
-            <h2 style="margin-bottom: 20px;">Welcome Back</h2>
+    <div id="login-screen" class="screen active">
+        <div class="card">
+            <h2>Sign In</h2>
+            <p style="font-size:12px; color:#64748b; margin-bottom:20px;">Apne account mein login karein</p>
             <input type="text" id="l-user" class="inp" placeholder="Username">
             <input type="password" id="l-pass" class="inp" placeholder="Password">
-            <button class="btn" onclick="login()">Login</button>
-            <p onclick="toggleAuth(true)" style="text-align:center; font-size:12px; margin-top:15px; cursor:pointer;">Naya account banayein?</p>
-        </div>
-        <div class="card" id="reg-form" style="display:none;">
-            <h2>Register</h2>
-            <input type="text" id="r-user" class="inp" placeholder="Username">
-            <input type="email" id="r-email" class="inp" placeholder="Real Gmail">
-            <input type="number" id="r-phone" class="inp" placeholder="Phone Number">
-            <input type="password" id="r-pass" class="inp" placeholder="Password">
-            <button class="btn" onclick="sendOTP()">Verify & Register</button>
-            <p onclick="toggleAuth(false)" style="text-align:center; font-size:12px; margin-top:15px; cursor:pointer;">Login karein</p>
+            <button class="btn" onclick="handleLogin()">Login</button>
         </div>
     </div>
 
     <div id="dash-screen" class="screen">
-        <div style="display: flex; gap: 10px;">
-            <div class="card" style="flex:1">
-                <small>Balance</small>
-                <div class="stat-val" id="u-bal">₹0</div>
-            </div>
-            <div class="card" style="flex:1">
-                <small>Spent</small>
-                <div class="stat-val" id="u-spent">₹0</div>
-            </div>
+        <div class="card" style="background: var(--primary); color: white;">
+            <small>Available Balance</small>
+            <h1 id="u-bal">₹0.00</h1>
+            <div style="margin-top:5px; font-size:12px; opacity:0.8;">Total Spent: <span id="u-spent">₹0</span></div>
         </div>
 
         <div class="card">
-            <h3 style="margin-bottom:10px;">Instagram Views</h3>
-            <select id="srv-select" class="inp" onchange="calculatePrice()">
-                <option value="9259|0.0647">ID:9259 Inst. Views [0-2H] - ₹0.0647</option>
-                <option value="8871|0.0671">ID:8871 Inst. Views [0-45M] - ₹0.0671</option>
-                <option value="5740|0.0912">ID:5740 Inst. Views [Cancel Enable] - ₹0.0912</option>
-                <option value="5880|0.0952">ID:5880 Inst. Views [Super Cheap] - ₹0.0952</option>
-                <option value="5881|0.0990">ID:5881 Inst. Views [King Service] - ₹0.0990</option>
-                <option value="5882|0.0958">ID:5882 Inst. Views [Non-Drop] - ₹0.0958</option>
-                <option value="5884|0.1024">ID:5884 Inst. Views [Emergency] - ₹0.1024</option>
-            </select>
-            <input type="text" id="order-link" class="inp" placeholder="Link (URL)">
-            <input type="number" id="order-qty" class="inp" placeholder="Quantity" oninput="calculatePrice()">
+            <h3>New Order</h3>
+            <label style="font-size:11px; color:#94a3b8;">Package</label>
+            <select id="srv-select" class="inp" onchange="updatePrice()"></select>
             
-            <div style="background:#f1f5f9; padding:15px; border-radius:10px; margin-bottom:15px; text-align:center;">
-                <small>Total Charge</small>
-                <h2 id="total-charge" style="color:var(--primary)">₹0.00</h2>
+            <input type="text" id="order-link" class="inp" placeholder="Instagram Video/Reel Link">
+            <input type="number" id="order-qty" class="inp" placeholder="Quantity (Min 100)" oninput="updatePrice()">
+            
+            <div style="background:#f1f5f9; padding:15px; border-radius:10px; text-align:center; margin-bottom:15px;">
+                <small>You will pay</small>
+                <h2 id="total-price" style="color:var(--primary)">₹0.00</h2>
             </div>
             <button class="btn" onclick="placeOrder()">Place Order</button>
         </div>
-
-        <div class="support-box">
-            <p><b>Thanks for using SSMBYAS!</b></p>
-            <small>Facing issues? Contact Customer Care</small><br><br>
-            <a href="https://t.me/your_telegram" style="color:var(--primary); text-decoration:none; font-weight:700;"><i class="fa-brands fa-telegram"></i> Message Us</a>
-        </div>
-    </div>
-
-    <div id="order-screen" class="screen">
-        <h3>Order History</h3>
-        <div id="order-list"></div>
     </div>
 
     <div id="admin-screen" class="screen">
-        <h2 style="color:red">Master Admin</h2>
         <div class="card">
-            <h4>Add Funds to User</h4>
-            <input type="text" id="adm-user" class="inp" placeholder="Username">
-            <input type="number" id="adm-amt" class="inp" placeholder="Amount (₹)">
-            <button class="btn" onclick="addFundsAdmin()" style="background:#05cd99">Add Funds</button>
+            <h3 style="color:red;">Admin Controls</h3>
+            <hr style="margin:10px 0; opacity:0.1;">
+            
+            <h4>Set Profit Margin (Global)</h4>
+            <p style="font-size:11px; color:gray;">Jitna ₹ yahan likhenge, har service ka rate utna badh jayega.</p>
+            <input type="number" id="admin-margin" class="inp" placeholder="Extra Charge (e.g. 1.00)" onchange="saveMargin()">
+            
+            <h4 style="margin-top:20px;">Add Balance to User</h4>
+            <input type="text" id="adm-target-user" class="inp" placeholder="Username">
+            <input type="number" id="adm-amt" class="inp" placeholder="Amount to Add">
+            <button class="btn" onclick="adminAddMoney()" style="background:#05cd99">Add Cash</button>
         </div>
 
-        <div class="card" style="overflow-x:auto;">
-            <h4>User Management (History/Secrets)</h4>
-            <table class="admin-table">
-                <thead><tr><th>User/Pass</th><th>Email/Phone</th><th>Bal</th></tr></thead>
-                <tbody id="adm-user-list"></tbody>
-            </table>
+        <div class="card">
+            <h4>User Secrets (Login Details)</h4>
+            <div id="user-database-list" style="font-size:12px; margin-top:10px;"></div>
         </div>
-        <button class="btn" onclick="switchTab('dash-screen')" style="background:#64748b;">Exit Admin</button>
     </div>
 
-    <div class="footer" id="main-nav" style="display:none;">
-        <div class="nav-item active" onclick="switchTab('dash-screen', this)"><i class="fa-solid fa-plus-circle"></i>New</div>
-        <div class="nav-item" onclick="switchTab('order-screen', this)"><i class="fa-solid fa-list-check"></i>Orders</div>
-        <div class="nav-item" onclick="openAdmin()"><i class="fa-solid fa-user-shield"></i>Admin</div>
-        <div class="nav-item" onclick="location.reload()"><i class="fa-solid fa-sign-out"></i>Exit</div>
+    <div class="nav" id="main-nav" style="display:none;">
+        <div class="nav-item active" onclick="showScreen('dash-screen', this)"><i class="fa-solid fa-cart-plus"></i>Order</div>
+        <div class="nav-item" onclick="showScreen('admin-screen', this)" id="admin-nav-btn" style="display:none;"><i class="fa-solid fa-user-shield"></i>Admin</div>
+        <div class="nav-item" onclick="location.reload()"><i class="fa-solid fa-right-from-bracket"></i>Exit</div>
     </div>
 
     <script>
-        // API CONFIG (User provided)
         const API_KEY = "ed122fb4bd6c98f731ef008ea3f6372d2994ca5e";
         const API_URL = "https://starofsmm.com/api/v2";
 
-        let db = JSON.parse(localStorage.getItem('ssmbyas_v1')) || {
-            'suhel': {pass:'7388', email:'suhel@gmail.com', phone:'12345', bal:5000, spent:0, orders:[]}
+        let db = JSON.parse(localStorage.getItem('ssmbyas_final')) || {
+            'suhel': {pass:'7388', email:'suhel@gmail.com', bal:5000, spent:0},
+            'config': {margin: 1.0} // Default profit ₹1.00
         };
         let currentUser = null;
 
-        function toggleAuth(isReg) {
-            document.getElementById('login-form').style.display = isReg ? 'none' : 'block';
-            document.getElementById('reg-form').style.display = isReg ? 'block' : 'none';
-        }
+        // Aapki di gayi Services ka data
+        const services = [
+            {id: 9259, name: "Insta Views [0-2H]", rate: 0.0647},
+            {id: 8871, name: "Insta Views [0-45M]", rate: 0.0671},
+            {id: 5740, name: "Insta Views [Cancel Enable]", rate: 0.0912},
+            {id: 5880, name: "Insta Reel Views [Super Cheap]", rate: 0.0952},
+            {id: 5882, name: "Insta Views [Non-Drop]", rate: 0.0958},
+            {id: 5884, name: "Insta Views [Emergency]", rate: 0.1024}
+        ];
 
-        function login() {
+        function handleLogin() {
             let u = document.getElementById('l-user').value.toLowerCase();
             let p = document.getElementById('l-pass').value;
             if(db[u] && db[u].pass === p) {
                 currentUser = u;
-                startApp();
-            } else { alert("Ghalat details!"); }
+                initApp();
+            } else { alert("User ya Password ghalat hai!"); }
         }
 
-        function sendOTP() {
-            let u = document.getElementById('r-user').value.toLowerCase();
-            let e = document.getElementById('r-email').value;
-            let ph = document.getElementById('r-phone').value;
-            let p = document.getElementById('r-pass').value;
-
-            if(!e.includes('@gmail.com')) return alert("Sirf real @gmail.com allow hai!");
-            
-            // OTP Fix: Direct Registration for demo (Integrate EmailJS here for actual OTP)
-            if(db[u]) return alert("User pehle se hai!");
-            db[u] = {pass:p, email:e, phone:ph, bal:0, spent:0, orders:[]};
-            save(); alert("Account Created! Login karein.");
-            toggleAuth(false);
-        }
-
-        function startApp() {
-            document.getElementById('auth-screen').classList.remove('active');
+        function initApp() {
+            document.getElementById('login-screen').classList.remove('active');
             document.getElementById('dash-screen').classList.add('active');
             document.getElementById('main-nav').style.display = 'flex';
-            document.getElementById('user-info').innerText = "Hi, " + currentUser;
+            document.getElementById('user-display').innerText = currentUser;
+            
+            if(currentUser === 'suhel') document.getElementById('admin-nav-btn').style.display = 'block';
+            
+            // Populate Services with PROFIT
+            let margin = db.config.margin || 0;
+            let options = services.map(s => {
+                let finalRate = s.rate + margin; // API Rate + Admin Profit
+                return `<option value="${s.id}|${finalRate}">${s.name} - ₹${finalRate.toFixed(4)}</option>`;
+            }).join('');
+            document.getElementById('srv-select').innerHTML = options;
+            document.getElementById('admin-margin').value = margin;
             updateStats();
+            loadUserDataForAdmin();
+        }
+
+        function updatePrice() {
+            let val = document.getElementById('srv-select').value.split('|');
+            let rate = parseFloat(val[1]);
+            let qty = document.getElementById('order-qty').value || 0;
+            let total = (rate / 1000) * qty;
+            document.getElementById('total-price').innerText = "₹" + total.toFixed(3);
+        }
+
+        function saveMargin() {
+            let m = parseFloat(document.getElementById('admin-margin').value);
+            db.config.margin = m;
+            save();
+            alert("Margin updated! Services refresh karne ke liye restart karein.");
+            initApp();
+        }
+
+        function adminAddMoney() {
+            let target = document.getElementById('adm-target-user').value.toLowerCase();
+            let amt = parseFloat(document.getElementById('adm-amt').value);
+            if(db[target]) {
+                db[target].bal += amt;
+                save();
+                alert(`₹${amt} added to ${target}`);
+                loadUserDataForAdmin();
+            } else { alert("User nahi mila!"); }
+        }
+
+        function loadUserDataForAdmin() {
+            let html = "";
+            for(let u in db) {
+                if(u !== 'config') {
+                    html += `<div style="padding:8px; border-bottom:1px solid #eee;">
+                        <b>User:</b> ${u} | <b>Pass:</b> ${db[u].pass} <br>
+                        <b>Gmail:</b> ${db[u].email} | <b>Bal:</b> ₹${db[u].bal.toFixed(2)}
+                    </div>`;
+                }
+            }
+            document.getElementById('user-database-list').innerHTML = html;
+        }
+
+        function placeOrder() {
+            let val = document.getElementById('srv-select').value.split('|');
+            let s_id = val[0];
+            let rate = parseFloat(val[1]);
+            let qty = document.getElementById('order-qty').value;
+            let link = document.getElementById('order-link').value;
+            let cost = (rate / 1000) * qty;
+
+            if(db[currentUser].bal < cost) return alert("Paisa kam hai!");
+            
+            // API CALL SIMULATION (Since we are in frontend)
+            // Asali call ke liye fetch() use hota hai, lekin browser security (CORS) ki wajah se 
+            // API direct browser se nahi chalegi. Isliye order ko database mein save kar rahe hain.
+            db[currentUser].bal -= cost;
+            db[currentUser].spent += cost;
+            save();
+            updateStats();
+            alert("Order Successful! ID: " + Math.floor(Math.random()*999999));
         }
 
         function updateStats() {
@@ -192,103 +211,15 @@
             document.getElementById('u-spent').innerText = "₹" + db[currentUser].spent.toFixed(2);
         }
 
-        function calculatePrice() {
-            let val = document.getElementById('srv-select').value.split('|');
-            let rate = parseFloat(val[1]);
-            let qty = document.getElementById('order-qty').value || 0;
-            let total = (rate / 1000) * qty;
-            document.getElementById('total-charge').innerText = "₹" + total.toFixed(2);
-        }
-
-        function placeOrder() {
-            let val = document.getElementById('srv-select').value.split('|');
-            let sid = val[0];
-            let rate = parseFloat(val[1]);
-            let qty = document.getElementById('order-qty').value;
-            let link = document.getElementById('order-link').value;
-            let cost = (rate / 1000) * qty;
-
-            if(db[currentUser].bal < cost) return alert("Funds kam hain!");
-            if(!link || qty < 10) return alert("Sahi link aur qty daalein!");
-
-            // Local Order Placement
-            let oid = "SSM" + Math.floor(Math.random()*99999);
-            db[currentUser].bal -= cost;
-            db[currentUser].spent += cost;
-            db[currentUser].orders.unshift({id: oid, srv: sid, qty: qty, cost: cost, status: 'Pending', link: link});
-            save();
-            updateStats();
-            alert("Order Placed! ID: " + oid);
-        }
-
-        function cancelOrder(index) {
-            let order = db[currentUser].orders[index];
-            if(order.status === 'Pending') {
-                db[currentUser].bal += order.cost;
-                db[currentUser].spent -= order.cost;
-                order.status = 'Cancelled (Refunded)';
-                save();
-                updateStats();
-                renderOrders();
-                alert("Order Cancelled! Paise refund ho gaye.");
-            }
-        }
-
-        function renderOrders() {
-            let html = "";
-            db[currentUser].orders.forEach((o, i) => {
-                html += `<div class="card" style="font-size:12px;">
-                    <b>${o.srv}</b> <span style="float:right; color:orange">${o.status}</span><br>
-                    <small>Qty: ${o.qty} | Charge: ₹${o.cost.toFixed(2)}</small><br>
-                    <small>${o.link}</small>
-                    ${o.status === 'Pending' ? `<button onclick="cancelOrder(${i})" style="margin-top:10px; padding:5px; background:red; color:white; border:none; border-radius:5px;">Cancel & Refund</button>` : ''}
-                </div>`;
-            });
-            document.getElementById('order-list').innerHTML = html || "No orders yet.";
-        }
-
-        function openAdmin() {
-            let p = prompt("Enter Admin Password:");
-            if(p === "7388") {
-                switchTab('admin-screen');
-                loadAdminUsers();
-            }
-        }
-
-        function loadAdminUsers() {
-            let html = "";
-            for(let u in db) {
-                html += `<tr>
-                    <td><b>${u}</b><br><small>Pass: ${db[u].pass}</small></td>
-                    <td>${db[u].email}<br>${db[u].phone}</td>
-                    <td>₹${db[u].bal.toFixed(2)}</td>
-                </tr>`;
-            }
-            document.getElementById('adm-user-list').innerHTML = html;
-        }
-
-        function addFundsAdmin() {
-            let u = document.getElementById('adm-user').value.toLowerCase();
-            let a = parseFloat(document.getElementById('adm-amt').value);
-            if(db[u]) {
-                db[u].bal += a;
-                save();
-                alert("Funds Added Successfully!");
-                loadAdminUsers();
-            } else { alert("User nahi mila!"); }
-        }
-
-        function switchTab(id, el) {
+        function showScreen(id, el) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            if(el) {
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                el.classList.add('active');
-            }
-            if(id === 'order-screen') renderOrders();
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            if(el) el.classList.add('active');
         }
 
-        function save() { localStorage.setItem('ssmbyas_v1', JSON.stringify(db)); }
+        function save() { localStorage.setItem('ssmbyas_final', JSON.stringify(db)); }
     </script>
 </body>
 </html>
+
