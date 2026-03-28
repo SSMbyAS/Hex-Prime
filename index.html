@@ -1,221 +1,187 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSMBYAS | Official Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { --primary: #0061ff; --bg: #f4f7fe; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: var(--bg); padding-bottom: 80px; }
-        .header { background: #fff; padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); sticky; top: 0; z-index: 100; }
-        .logo { font-weight: 800; color: var(--primary); font-size: 20px; }
-        .screen { display: none; padding: 15px; max-width: 480px; margin: 0 auto; }
-        .active { display: block; }
-        .card { background: #fff; padding: 20px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-bottom: 15px; }
-        .inp { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 12px; outline: none; }
-        .btn { width: 100%; padding: 15px; border-radius: 12px; border: none; background: var(--primary); color: white; font-weight: 700; cursor: pointer; }
-        .nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; left: 50%; transform: translateX(-50%); background: #fff; display: flex; border-top: 1px solid #eee; padding: 10px 0; }
-        .nav-item { flex: 1; text-align: center; color: #94a3b8; font-size: 11px; cursor: pointer; }
-        .nav-item.active { color: var(--primary); }
-        .nav-item i { font-size: 22px; display: block; }
-        .hist-item { font-size: 11px; padding: 8px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
-    </style>
-</head>
-<body>
+<h1 align="center">Digital Forensics Incident Response & Detection Engineering</h1>
 
-    <div class="header">
-        <div class="logo">SSMBYAS</div>
-        <div id="u-top" style="font-size:12px; font-weight:600;">Guest</div>
-    </div>
+<div align="center">
+  <img src="DFIR-logo.png" alt="DFIR & Detection Engineering" width="485">
+</div>
+<br>
+Análisis forense de artefactos comunes y no tan comunes, técnicas anti-forense y detección de técnicas utilizadas por actores maliciosos para la evasión de sistemas de protección y monitorización.
 
-    <div id="login-screen" class="screen active">
-        <div class="card">
-            <h2>Login</h2>
-            <input type="text" id="l-user" class="inp" placeholder="Username">
-            <input type="password" id="l-pass" class="inp" placeholder="Password">
-            <button class="btn" onclick="handleLogin()">Sign In</button>
-        </div>
-    </div>
+<h1>Índice</h1>
 
-    <div id="dash-screen" class="screen">
-        <div class="card" style="background: var(--primary); color: white;">
-            <small>My Balance</small>
-            <h1 id="u-bal">₹0.00</h1>
-        </div>
+- [📓 Análisis Forense, Artefactos y Respuesta Incidentes](#-análisis-forense-artefactos-y-respuesta-incidentes)
+  - [📁 Gestión de Respuesta a Incidentes y Análisis Forense Digital (DFIR)](#-gestión-de-respuesta-a-incidentes-y-análisis-forense-digital-dfir)
+    - [📜 Diagrama de preguntas de Respuesta a Incidentes - Análisis inicial, ¿qué ha pasado?](#-diagrama-de-preguntas-de-respuesta-a-incidentes---análisis-inicial-qué-ha-pasado)
+    - [📜 Ciclo de vida - Respuesta a Incidentes](#-ciclo-de-vida---respuesta-a-incidentes)
+    - [📜 Preguntas - Respuesta a Incidentes](#-preguntas---respuesta-a-incidentes)
+    - [📜 Preguntas - Análisis Forense Digital](#-preguntas---análisis-forense-digital)
+    - [📜 Metodología - Análisis Forense Digital](#-metodología---análisis-forense-digital)
+  - [📁 Windows](#-windows)
+    - [📜 Logs de eventos de Windows](#-logs-de-eventos-de-windows)
+    - [📜 Logs de registros sobre instalaciones de Windows](#-logs-de-registros-sobre-instalaciones-de-windows)
+    - [📜 Lista de Events ID de Windows y Sysmon relevantes en investigaciones DFIR](#-lista-de-events-id-de-windows-y-sysmon-relevantes-en-investigaciones-dfir)
+    - [📜 Artefactos de Tareas programadas en Windows](#-artefactos-de-tareas-programadas-en-windows)
+    - [📜 Scripts para detectar actividades sospechosas en Windows](#-scripts-para-detectar-actividades-sospechosas-en-windows)
+    - [📜 Obtener software instalado y sus versiones (x86 y x64)](#-obtener-software-instalado-y-sus-versiones-x86-y-x64)
+    - [📜 Análisis y artefactos de ShellBags](#-análisis-y-artefactos-de-shellbags)
+    - [📜 Análisis de memoria RAM: Generación de línea temporal (Volatility 3)](#-análisis-de-memoria-ram-generación-de-línea-temporal-volatility-3)
+    - [📜 Detectar peristencia de ejecutables en el registro de Windows (técnicas basadas en la matriz de *MITRE ATT\&CK*)](#-detectar-peristencia-de-ejecutables-en-el-registro-de-windows-técnicas-basadas-en-la-matriz-de-mitre-attck)
+    - [📜 Artefactos de conexiones de clientes VPN](#-artefactos-de-conexiones-de-clientes-vpn)
+    - [📜 Persistencia en servicios](#-persistencia-en-servicios)
+    - [📜 Auditar cambios de membresía en grupos críticos (últimos 15 días)](#-auditar-cambios-de-membresía-en-grupos-críticos-últimos-15-días)
+    - [📜 ¿Han eliminado el registro de eventos de Windows?](#-han-eliminado-el-registro-de-eventos-de-windows)
+    - [📜 Volatility 3: clipboard](#-volatility-3-clipboard)
+    - [📜 Comprobar archivos abiertos recientemente por el usuario](#-comprobar-archivos-abiertos-recientemente-por-el-usuario)
+    - [📜 Analizar ficheros Windows Prefetch (.pf)](#-analizar-ficheros-windows-prefetch-pf)
+    - [📜 Artefactos Adobe Acrobat: Caché de historial de PDFs abiertos recientemente](#-artefactos-adobe-acrobat-caché-de-historial-de-pdfs-abiertos-recientemente)
+    - [📜 Ventana "Ejecutar" y "barra direcciones de Explorer.exe": Caché de historial de ficheros y paths visitados recientemente](#-ventana-ejecutar-y-barra-direcciones-de-explorerexe-caché-de-historial-de-ficheros-y-paths-visitados-recientemente)
+    - [📜 Thumbcache Viewer](#-thumbcache-viewer)
+    - [📜 Historial de pestañas sin cerrar de Notepad.exe (Win11)](#-historial-de-pestañas-sin-cerrar-de-notepadexe-win11)
+    - [📜 Artefáctos forenses en AnyDesk, Team Viewer y LogMeIn](#-artefáctos-forenses-en-anydesk-team-viewer-y-logmein)
+    - [📜 Sesiones de conexión remota almacenadas con PuTTY, MobaXterm, WinSCP (SSH, RDP, FTP, SFTP, SCP u otras)](#-sesiones-de-conexión-remota-almacenadas-con-putty-mobaxterm-winscp-ssh-rdp-ftp-sftp-scp-u-otras)
+    - [📜 Artefactos y trazabilidad en conexiones RDP](#-artefactos-y-trazabilidad-en-conexiones-rdp)
+    - [📜 Artefactos Bitmaps y Prefetch en RDP](#-artefactos-bitmaps-y-prefetch-en-rdp)
+    - [📜 Caché almacenada de conexiones establecidas a otros hosts vía RDP](#-caché-almacenada-de-conexiones-establecidas-a-otros-hosts-vía-rdp)
+    - [📜 Conocer la URL de descarga de un archivo (ADS Zone.Identifier)](#-conocer-la-url-de-descarga-de-un-archivo-ads-zoneidentifier)
+    - [📜 Modificar y detectar Timestamps modificados en ficheros analizando sus metadatos (técnica anti-forense)](#-modificar-y-detectar-timestamps-modificados-en-ficheros-analizando-sus-metadatos-técnica-anti-forense)
+    - [📜 Windows Search Index (archivos Windows.edb, .crwl, .blf, .jrs)](#-windows-search-index-archivos-windowsedb-crwl-blf-jrs)
+    - [📜 PSReadLine: Historial de comandos ejecutados en una consola PowerShell](#-psreadline-historial-de-comandos-ejecutados-en-una-consola-powershell)
+    - [📜 Artefactos forense - MS Word](#-artefactos-forense---ms-word)
+    - [📜 Análisis de malware en ficheros XLSX (MS Excel)](#-análisis-de-malware-en-ficheros-xlsx-ms-excel)
+    - [📜 Análisis de malware en ficheros MS Office (oletools)](#-análisis-de-malware-en-ficheros-ms-office-oletools)
+    - [📜 Herramientas de análisis en ficheros MS Office y otros (detectar malware o phising)](#-herramientas-de-análisis-en-ficheros-ms-office-y-otros-detectar-malware-o-phising)
+    - [📜 Herramientas de análisis PDF (detectar malware o phising)](#-herramientas-de-análisis-pdf-detectar-malware-o-phising)
+    - [📜 Identificar Shellcodes en ficheros y otros comandos de análisis](#-identificar-shellcodes-en-ficheros-y-otros-comandos-de-análisis)
+    - [📜 Detectar URL maliciosas en el documento](#-detectar-url-maliciosas-en-el-documento)
+    - [📜 Asignación de IPs en equipos](#-asignación-de-ips-en-equipos)
+    - [📜 Windows Firewall (wf.msc): Reglas residuales de software desintalado](#-windows-firewall-wfmsc-reglas-residuales-de-software-desintalado)
+    - [📜 Persistencia: suplantación de procesos del sistema](#-persistencia-suplantación-de-procesos-del-sistema)
+    - [📜 Herramientas para consultar y auditar: GPOs, control de accesos, usuarios, grupos y otros funciones de Active Directory y LDAP](#-herramientas-para-consultar-y-auditar-gpos-control-de-accesos-usuarios-grupos-y-otros-funciones-de-active-directory-y-ldap)
+    - [📜 Análisis de phishing mails (extensión .eml)](#-análisis-de-phishing-mails-extensión-eml)
+    - [📜 MUICache: artefactos sobre aplicaciones](#-muicache-artefactos-sobre-aplicaciones)
+    - [📜 FeatureUsage: reconstruir las actividades de los usuarios](#-featureusage-reconstruir-las-actividades-de-los-usuarios)
+    - [📜 MRU (Most Recently Used): Artefactos de Office local y Office 365](#-mru-most-recently-used-artefactos-de-office-local-y-office-365)
+    - [📜 Ver el úlimo fichero descomprimido 7-Zip](#-ver-el-úlimo-fichero-descomprimido-7-zip)
+    - [📜 Detectar antimalware instalado y su estado usando WMI](#-detectar-antimalware-instalado-y-su-estado-usando-wmi)
+    - [📜 Detectar servicios configurados con cuentas de dominio](#-detectar-servicios-configurados-con-cuentas-de-dominio)
+    - [📜 LOLBins comunes y sus artefactos](#-lolbins-comunes-y-sus-artefactos)
+  - [📁 Linux](#-linux)
+    - [📜 Logs del sistema de Linux](#-logs-del-sistema-de-linux)
+    - [📜 Logs de aplicaciones de Linux](#-logs-de-aplicaciones-de-linux)
+    - [📜 Logs journalctl (systemd)](#-logs-journalctl-systemd)
+    - [📜 Copiar un binario malicioso ya eliminado a través de su proceso todavía en ejecución](#-copiar-un-binario-malicioso-ya-eliminado-a-través-de-su-proceso-todavía-en-ejecución)
+    - [📜 Identificar y obtener archivos con PID de procesos maliciosos (conexiones SSH Linux)](#-identificar-y-obtener-archivos-con-pid-de-procesos-maliciosos-conexiones-ssh-linux)
+    - [📜 Recopilar información en un primer análisis de respuesta a incidentes (sistema Linux)](#-recopilar-información-en-un-primer-análisis-de-respuesta-a-incidentes-sistema-linux)
+    - [📜 Historial de comandos de la Shell de Linux (.bash\_history \& .zsh\_history)](#-historial-de-comandos-de-la-shell-de-linux-bash_history--zsh_history)
+    - [📜 Voldado de todos los directorios y ficheros de Linux](#-voldado-de-todos-los-directorios-y-ficheros-de-linux)
+    - [📜 Volcado de Memoria RAM en Linux con LiME (Linux Memory Extractor)](#-volcado-de-memoria-ram-en-linux-con-lime-linux-memory-extractor)
+    - [📜 Comprobar si un usuario ejecutó el comando "sudo"](#-comprobar-si-un-usuario-ejecutó-el-comando-sudo)
+    - [📜 Detectar malware Linux fileless (memfd)](#-detectar-malware-linux-fileless-memfd)
+  - [📁 Redes](#-redes)
+    - [📜 Filtros Wireshark para analistas](#-filtros-wireshark-para-analistas)
+  - [📁 Contenedores](#-contenedores)
+    - [📜 Análisis Forense en contenedores Docker](#-análisis-forense-en-contenedores-docker)
+  - [📁 Android \& iOS](#-android--ios)
+    - [📜 Forense Android: Evidencias de imágenes eliminadas y enviadas por WhatsApp](#-forense-android-evidencias-de-imágenes-eliminadas-y-enviadas-por-whatsapp)
+  - [📁 Varios](#-varios)
+    - [📜 Artefactos en dispositivos USB en Windows, Linux y MacOS](#-artefactos-en-dispositivos-usb-en-windows-linux-y-macos)
+    - [📜 Recopilación de artefactos de paths en Windows, Linux y MacOS](#-recopilación-de-artefactos-de-paths-en-windows-linux-y-macos)
+  - [📁 Herramientas](#-herramientas)
+    - [📜 Autopsy: Herramienta avanzada de análisis forense digital](#-autopsy-herramienta-avanzada-de-análisis-forense-digital)
+    - [📜 X-Ways Forensics: Herramienta avanzada de análisis forense digital](#-x-ways-forensics-herramienta-avanzada-de-análisis-forense-digital)
+    - [📜 Volatility 3: Análisis de volcados de memoria](#-volatility-3-análisis-de-volcados-de-memoria)
+    - [📜 WinTriage (Securizame): Análisis y extracción de artefactos forenses Windows](#-wintriage-securizame-análisis-y-extracción-de-artefactos-forenses-windows)
+    - [📜 Velociraptor: Recolección, monitorización y hunting para análisis forense digital y respuesta a incidentes en Windows](#-velociraptor-recolección-monitorización-y-hunting-para-análisis-forense-digital-y-respuesta-a-incidentes-en-windows)
+    - [📜 LogonTracer: Trazabilidad de inicios de sesión en Active Directory](#-logontracer-trazabilidad-de-inicios-de-sesión-en-active-directory)
+    - [📜 AuthLogParser: Análisis auth.log, resumen de registros relacionados con autenticación](#-authlogparser-análisis-authlog-resumen-de-registros-relacionados-con-autenticación)
+    - [📜 Skadi: Análisis de artefactos e imágenes forenses](#-skadi-análisis-de-artefactos-e-imágenes-forenses)
+    - [📜 GRR - Google Rapid Response](#-grr---google-rapid-response)
+    - [📜 Arkime - Almacenar e indexar el tráfico de red en formato PCAP](#-arkime---almacenar-e-indexar-el-tráfico-de-red-en-formato-pcap)
+    - [📜 Live Forensicator - Recolección automatizada de información y artefactos en Windows, Linux y MacOS](#-live-forensicator---recolección-automatizada-de-información-y-artefactos-en-windows-linux-y-macos)
+    - [📜 FTK Forensic Toolkit (Exterro)](#-ftk-forensic-toolkit-exterro)
+    - [📜 EnCase Forensic (ondata)](#-encase-forensic-ondata)
+    - [📜 SANS DFIR - Posters \& Cheat Sheets](#-sans-dfir---posters--cheat-sheets)
+- [📓 Detección de técnicas de evasión en sistemas SIEM, SOC y Anti-Forense](#-detección-de-técnicas-de-evasión-en-sistemas-siem-soc-y-anti-forense)
+  - [📁 Windows](#-windows-1)
+    - [📜 Comando Windows: "net" y "net1"](#-comando-windows-net-y-net1)
+    - [📜 Detectar técnicas maliciosas realizadas a través de CertUtil (LOLBin)](#-detectar-técnicas-maliciosas-realizadas-a-través-de-certutil-lolbin)
+    - [📜 Detectar descargas de ficheros realizadas a través de PowerShell usando "Invoke-WebRequest, Invoke-RestMethod, BitsTransfer"](#-detectar-descargas-de-ficheros-realizadas-a-través-de-powershell-usando-invoke-webrequest-invoke-restmethod-bitstransfer)
+    - [📜 Post-Explotación - PrivEsc con scmanager](#-post-explotación---privesc-con-scmanager)
+    - [📜 DLL Hijacking *cscapi.dll*](#-dll-hijacking-cscapidll)
+    - [📜 Otras técnicas de ejecución de CMD o PowerShell](#-otras-técnicas-de-ejecución-de-cmd-o-powershell)
+    - [📜 Uso de *type* para descargar o subir ficheros](#-uso-de-type-para-descargar-o-subir-ficheros)
+    - [📜 Bloquear conexiones USB: Rubber Ducky y Cactus WHID](#-bloquear-conexiones-usb-rubber-ducky-y-cactus-whid)
+    - [📜 Claves de registro de Windows donde se almacenan las contraseñas](#-claves-de-registro-de-windows-donde-se-almacenan-las-contraseñas)
+    - [📜 WDigest Authentication (lsass.exe): Habilitado / Deshabilitado](#-wdigest-authentication-lsassexe-habilitado--deshabilitado)
+    - [📜 Detectar si un sistema es una máquina física o virtual y su tipo de hipervisor o CSP (Azure, AWS, GCP)](#-detectar-si-un-sistema-es-una-máquina-física-o-virtual-y-su-tipo-de-hipervisor-o-csp-azure-aws-gcp)
+    - [📜 Técnicas de ofuscación en la ejecución de comandos en Windows](#-técnicas-de-ofuscación-en-la-ejecución-de-comandos-en-windows)
+    - [📜 Detectar acciones de AutoRun al abrir una Command Prompt (cmd)](#-detectar-acciones-de-autorun-al-abrir-una-command-prompt-cmd)
+    - [📜 Extensiones ejecutables alternativas a .exe](#-extensiones-ejecutables-alternativas-a-exe)
+    - [📜 Detectar malware que se está ejecutando desde una carpeta que no permite su acceso por error de ubicación (flujo NTFS en directorios $INDEX\_ALLOCATION)](#-detectar-malware-que-se-está-ejecutando-desde-una-carpeta-que-no-permite-su-acceso-por-error-de-ubicación-flujo-ntfs-en-directorios-index_allocation)
+    - [📜 Windows Search Index: Detección de técnicas anti-forenses y evasión](#-windows-search-index-detección-de-técnicas-anti-forenses-y-evasión)
+    - [📜 Deshabilitar Windows Defender para eludir la detección de AMSI en la ejecución de binarios maliciosos (renombrar MsMpEng.exe a través del registro ControlSet00X)](#-deshabilitar-windows-defender-para-eludir-la-detección-de-amsi-en-la-ejecución-de-binarios-maliciosos-renombrar-msmpengexe-a-través-del-registro-controlset00x)
+  - [📁 Linux](#-linux-1)
+    - [📜 *debugfs* para eludir alertas al ejecutar comandos o acceder a ficheros con auditoria](#-debugfs-para-eludir-alertas-al-ejecutar-comandos-o-acceder-a-ficheros-con-auditoria)
+    - [📜 Detectar la ejecución de comandos de forma oculta en history](#-detectar-la-ejecución-de-comandos-de-forma-oculta-en-history)
+    - [📜 Deshabilitar el uso del historial de la Shell](#-deshabilitar-el-uso-del-historial-de-la-shell)
+    - [📜 Eliminar el historial de comandos de la Shell (.bash\_history \& .zsh\_history)](#-eliminar-el-historial-de-comandos-de-la-shell-bash_history--zsh_history)
+    - [📜 Auditoría en el uso privilegiado de los siguientes comandos en Linux](#-auditoría-en-el-uso-privilegiado-de-los-siguientes-comandos-en-linux)
+  - [📁 Redes](#-redes-1)
+    - [📜 WAF Bypass (SSRF): usar acortamiento IP local](#-waf-bypass-ssrf-usar-acortamiento-ip-local)
+    - [📜 Dirección IPv6 asignada a IPv4 utilizada para ofuscación](#-dirección-ipv6-asignada-a-ipv4-utilizada-para-ofuscación)
+  - [📁 Varios](#-varios-1)
+    - [📜 Forensia (Anti-Forensic)](#-forensia-anti-forensic)
 
-        <div class="card">
-            <h3>New Order</h3>
-            <select id="srv-select" class="inp" onchange="updatePrice()"></select>
-            <input type="text" id="order-link" class="inp" placeholder="Instagram Link">
-            <input type="number" id="order-qty" class="inp" placeholder="Quantity" oninput="updatePrice()">
-            <p style="text-align:center; font-weight:700; margin-bottom:10px;">Total: <span id="total-price">₹0.00</span></p>
-            <button class="btn" id="order-btn" onclick="placeOrder()">Place Order</button>
-        </div>
+---
 
-        <div class="card">
-            <h4>Payment History</h4>
-            <div id="pay-history"></div>
-        </div>
-    </div>
+# 📓 Análisis Forense, Artefactos y Respuesta Incidentes
 
-    <div id="admin-screen" class="screen">
-        <div class="card">
-            <h3 style="color:red">Master Settings</h3>
-            <label>Extra Margin (₹ per 1000):</label>
-            <input type="number" id="adm-margin" class="inp" onchange="saveMargin()">
-            
-            <h4>Add User Funds</h4>
-            <input type="text" id="adm-target" class="inp" placeholder="Username">
-            <input type="number" id="adm-amt" class="inp" placeholder="Amount">
-            <button class="btn" onclick="adminAddMoney()" style="background:green">Add Balance</button>
-        </div>
-        <div class="card">
-            <h4>User Database</h4>
-            <div id="user-list" style="font-size:12px;"></div>
-        </div>
-    </div>
+## 📁 Gestión de Respuesta a Incidentes y Análisis Forense Digital (DFIR)
 
-    <div class="nav" id="main-nav" style="display:none;">
-        <div class="nav-item active" onclick="showScreen('dash-screen', this)"><i class="fa-solid fa-house"></i>Home</div>
-        <div class="nav-item" id="adm-nav" style="display:none;" onclick="showScreen('admin-screen', this)"><i class="fa-solid fa-shield"></i>Admin</div>
-        <div class="nav-item" onclick="location.reload()"><i class="fa-solid fa-lock"></i>Logout</div>
-    </div>
+### 📜 Diagrama de preguntas de Respuesta a Incidentes - Análisis inicial, ¿qué ha pasado?
 
-    <script>
-        const API_KEY = "ed122fb4bd6c98f731ef008ea3f6372d2994ca5e";
-        const API_URL = "https://starofsmm.com/api/v2";
-        // Proxy to bypass CORS error
-        const PROXY = "https://corsproxy.io/?";
+[![](https://mermaid.ink/img/pako:eNp9VU1vEzEQ_SvWnrbSFpSGUw9U2aQSSAUVWi4ol4k9SQ1ee-uPQqj6Y3rsgVN_ABL7xxjvRxoSt3tK1jPjN2_em73NuBGYHWdLZX7wK7CenX2ea0bPJP_751NoHtgVsBocCHNy0J305-zw8C0rRxQ2YddBNg-awRK5hyGuHPUhk_yLC2Clcex1nz08XEnUHhMHRsHCWLrWotsUHC4tB3ACubSK8tc7-W2N5rEyT2jKPnmanzpvweNKAhVIJZoqaMmBy-ZR73RzlF80j8oksiQ1YjVUsaEEVdNI1SW1i8xijZYHJ40m6P9XUriC2JDZI0QTaO5DPB2amo760pN8arQLyoONkQl0ztTGeuzqb9IHaGV-3jxYIUXLiABvXKIGoXZGRwA79x9Ra6eOBU3ZSvoUO9cBWW0EVMnKAnXQXILddHbUV57k74w2tmDn1tQSBYhnqFfYklPEP5a4pdEViVD86Y3tT9HzV7v3RWldohYWI9KIer_GitQsiGm8kQScYCfJAgtkHo6WKXih5aeOO4FOx9F6F7BoAQgCmtSowxcqlPlEN_dKOunYkhykKfowKXTtSVO9aIJOzzwOtK9CN21rejbKzwikQ3sjefT3rg0JgMeK-OlWgzCDcmadcmY0X3Jjc6_ZAr6ldKMDkltNp38zKJfyuvxxuUUWDIso1YaQlsE6kMLXz9vjZK_-tNNDW98iD-SAZ6cdMVIoCUMlRcqjXLYuGU-7S95MaKn8Lja97ufSEqzJ4LBQcezs_WVaEVFujINdmb0ryvyjKTYDb9lSL6wJsgktM7M7rbKdt-_5SLor7kAlf23PutflbNyuqQ2A9KIi7mprbhBp9R9kRVahrUAK-kjdxuB55q-wwnl2TD_JhN_n2VzfURwEby7WmmfHZH8sslDTGsOZhJWFanhJKiD7f-g-eu23r8hq0F-NoZAlKId3_wA9zfu8?type=png)](https://mermaid.live/edit#pako:eNp9VU1vEzEQ_SvWnrbSFpSGUw9U2aQSSAUVWi4ol4k9SQ1ee-uPQqj6Y3rsgVN_ABL7xxjvRxoSt3tK1jPjN2_em73NuBGYHWdLZX7wK7CenX2ea0bPJP_751NoHtgVsBocCHNy0J305-zw8C0rRxQ2YddBNg-awRK5hyGuHPUhk_yLC2Clcex1nz08XEnUHhMHRsHCWLrWotsUHC4tB3ACubSK8tc7-W2N5rEyT2jKPnmanzpvweNKAhVIJZoqaMmBy-ZR73RzlF80j8oksiQ1YjVUsaEEVdNI1SW1i8xijZYHJ40m6P9XUriC2JDZI0QTaO5DPB2amo760pN8arQLyoONkQl0ztTGeuzqb9IHaGV-3jxYIUXLiABvXKIGoXZGRwA79x9Ra6eOBU3ZSvoUO9cBWW0EVMnKAnXQXILddHbUV57k74w2tmDn1tQSBYhnqFfYklPEP5a4pdEViVD86Y3tT9HzV7v3RWldohYWI9KIer_GitQsiGm8kQScYCfJAgtkHo6WKXih5aeOO4FOx9F6F7BoAQgCmtSowxcqlPlEN_dKOunYkhykKfowKXTtSVO9aIJOzzwOtK9CN21rejbKzwikQ3sjefT3rg0JgMeK-OlWgzCDcmadcmY0X3Jjc6_ZAr6ldKMDkltNp38zKJfyuvxxuUUWDIso1YaQlsE6kMLXz9vjZK_-tNNDW98iD-SAZ6cdMVIoCUMlRcqjXLYuGU-7S95MaKn8Lja97ufSEqzJ4LBQcezs_WVaEVFujINdmb0ryvyjKTYDb9lSL6wJsgktM7M7rbKdt-_5SLor7kAlf23PutflbNyuqQ2A9KIi7mprbhBp9R9kRVahrUAK-kjdxuB55q-wwnl2TD_JhN_n2VzfURwEby7WmmfHZH8sslDTGsOZhJWFanhJKiD7f-g-eu23r8hq0F-NoZAlKId3_wA9zfu8)
 
-        let db = JSON.parse(localStorage.getItem('ssmbyas_v3')) || {
-            'suhel': {pass:'7388', bal:5000, history:[]},
-            'config': {margin: 1.0}
-        };
-        let currentUser = null;
+### 📜 Ciclo de vida - Respuesta a Incidentes
 
-        const services = [
-            {id: 9259, name: "Insta Views [Fast]", rate: 0.0647},
-            {id: 5740, name: "Insta Views [Refill]", rate: 0.0912},
-            {id: 5882, name: "Insta Views [Non-Drop]", rate: 0.0958}
-        ];
+[![](https://mermaid.ink/img/pako:eNpFkMFqwzAMhl_F6JRB8gI5DNokhUILpbsNX4SttGaJbVSZMUqfao-wF5vrkewmPn1C0n8HEyxBC-MUPs0VWdThrP2mOjFFZDTu59u_ZKCa5lVtq70lL250Zu1sS6eruuCF_EK7QvtqYEa72CqooxN3WWf7Yg3VmUyK9L9tKHz35BidpGmdP4WbNPu85nkHZXVX1A3UMBPP6Gz-5a69UhrkSjNpaHNpkT80aP_IHiYJb1_eQCucqIYULQr1Di-MM7QjTrdMyToJfPwLp2RUQ0T_HsLiPH4Bf1ptrQ?type=png)](https://mermaid.live/edit#pako:eNpFkMFqwzAMhl_F6JRB8gI5DNokhUILpbsNX4SttGaJbVSZMUqfao-wF5vrkewmPn1C0n8HEyxBC-MUPs0VWdThrP2mOjFFZDTu59u_ZKCa5lVtq70lL250Zu1sS6eruuCF_EK7QvtqYEa72CqooxN3WWf7Yg3VmUyK9L9tKHz35BidpGmdP4WbNPu85nkHZXVX1A3UMBPP6Gz-5a69UhrkSjNpaHNpkT80aP_IHiYJb1_eQCucqIYULQr1Di-MM7QjTrdMyToJfPwLp2RUQ0T_HsLiPH4Bf1ptrQ)
 
-        function handleLogin() {
-            let u = document.getElementById('l-user').value.toLowerCase();
-            let p = document.getElementById('l-pass').value;
-            if(db[u] && db[u].pass === p) {
-                currentUser = u;
-                startApp();
-            } else { alert("Wrong details!"); }
-        }
-
-        function startApp() {
-            document.getElementById('login-screen').classList.remove('active');
-            document.getElementById('dash-screen').classList.add('active');
-            document.getElementById('main-nav').style.display = 'flex';
-            document.getElementById('u-top').innerText = currentUser;
-            if(currentUser === 'suhel') document.getElementById('adm-nav').style.display = 'block';
-            
-            loadServices();
-            updateUI();
-        }
-
-        function loadServices() {
-            let m = db.config.margin;
-            let html = services.map(s => {
-                let r = s.rate + m;
-                return `<option value="${s.id}|${r}">${s.name} - ₹${r.toFixed(3)}</option>`;
-            }).join('');
-            document.getElementById('srv-select').innerHTML = html;
-            document.getElementById('adm-margin').value = m;
-        }
-
-        function updatePrice() {
-            let val = document.getElementById('srv-select').value.split('|');
-            let rate = parseFloat(val[1]);
-            let qty = document.getElementById('order-qty').value || 0;
-            document.getElementById('total-price').innerText = "₹" + ((rate/1000)*qty).toFixed(3);
-        }
-
-        async function placeOrder() {
-            let val = document.getElementById('srv-select').value.split('|');
-            let qty = document.getElementById('order-qty').value;
-            let link = document.getElementById('order-link').value;
-            let cost = (parseFloat(val[1])/1000)*qty;
-
-            if(db[currentUser].bal < cost) return alert("Low Balance!");
-            
-            document.getElementById('order-btn').innerText = "Processing...";
-
-            // REAL API CALL WITH PROXY
-            try {
-                const response = await fetch(PROXY + API_URL + `?key=${API_KEY}&action=add&service=${val[0]}&link=${link}&quantity=${qty}`);
-                const data = await response.json();
-
-                if(data.order) {
-                    db[currentUser].bal -= cost;
-                    db[currentUser].history.push({type:'Order', amt:cost, date: new Date().toLocaleDateString()});
-                    save();
-                    alert("Order Placed! ID: " + data.order);
-                    updateUI();
-                } else {
-                    alert("API Error: " + (data.error || "Unknown"));
-                }
-            } catch (err) {
-                alert("Connection Error. Check Internet.");
-            }
-            document.getElementById('order-btn').innerText = "Place Order";
-        }
-
-        function adminAddMoney() {
-            let t = document.getElementById('adm-target').value.toLowerCase();
-            let a = parseFloat(document.getElementById('adm-amt').value);
-            if(db[t]) {
-                db[t].bal += a;
-                db[t].history.push({type:'Deposit', amt:a, date: new Date().toLocaleDateString()});
-                save();
-                alert("Added!");
-                loadUsers();
-            }
-        }
-
-        function saveMargin() {
-            db.config.margin = parseFloat(document.getElementById('adm-margin').value);
-            save();
-            loadServices();
-            alert("Margin Saved!");
-        }
-
-        function updateUI() {
-            document.getElementById('u-bal').innerText = "₹" + db[currentUser].bal.toFixed(2);
-            let histHtml = db[currentUser].history.map(h => `
-                <div class="hist-item">
-                    <span>${h.type} (${h.date})</span>
-                    <span style="color:${h.type==='Deposit'?'green':'red'}">${h.type==='Deposit'?'+':'-'}₹${h.amt}</span>
-                </div>
-            `).join('');
-            document.getElementById('pay-history').innerHTML = histHtml || "No history.";
-        }
-
-        function showScreen(id, el) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            el.classList.add('active');
-            if(id === 'admin-screen') loadUsers();
-        }
-
-        function loadUsers() {
-            let html = "";
-            for(let u in db) {
-                if(u!=='config') html += `<div>${u} - ₹${db[u].bal.toFixed(2)} (Pass: ${db[u].pass})</div>`;
-            }
-            document.getElementById('user-list').innerHTML = html;
-        }
-
-        function save() { localStorage.setItem('ssmbyas_v3', JSON.stringify(db)); }
-    </script>
-</body>
-</html>
+<table>
+  <tr>
+    <td><strong>Preparación</strong></td>
+    <td>Reúne las herramientas necesarias y aprende su funcionamiento, familiarizándote con ellas.</td>
+    <td>
+      - Antimalware y comprobadores de integridad de ficheros/dispositivos.<br>
+      - Escáneres de vulnerabilidades, análisis de logs, detectores de intrusiones y otras herramientas de auditoría.<br>
+      - Recuperación de backups.<br>
+      - Herramientas de análisis forense (las traerá el perito forense).
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Identificación</strong></td>
+    <td>Detecta el incidente, determina su alcance y forma de solución e involucra a los responsables del negocio, las operaciones y la comunicación.</td>
+    <td>
+      - Contacta con el soporte técnico, con el CIRST o CERT, o con un perito forense si fuera necesario.<br>
+      - Contacta con la policía si fuera necesario.<br>
+      - Contacta con el asesor legal si fuera necesario.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Contención</strong></td>
+    <td>Impide que el incidente se extienda a otros recursos, minimizando su impacto.</td>
+    <td>
+      - Separa el/los equipos de la red cableada o wifi.<br>
+      - Deshabilita cuentas de usuario comprometidas.<br>
+      - Cambia las contraseñas de las cuentas de usuario comprometidas.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Erradicación (mitigación) y Recuperación</strong></td>
+    <td>Elimina si fuera necesario los elementos comprometidos antes de iniciar la recuperación.</td>
+    <td>
+      - Reinstala los sistemas afectados.<br>
+      - Restaura desde un backup.
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Recapitulación o Post-Incidente</strong></td>
+    <td>Documenta los detalles del incidente, archiva los datos recogidos y 
