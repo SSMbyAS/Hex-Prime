@@ -1,211 +1,35 @@
 <!DOCTYPE html>
-<html lang="hi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSMBYAS | V12 Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { --primary: #2ea44f; --bg: #f6f8fa; --card: #ffffff; --text: #24292e; --border: #d0d7de; --link: #0969da; --danger: #cf222e; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg); color: var(--text); padding-bottom: 80px; }
-
-        .header { background: #24292e; color: #fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .logo-area { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; }
-        
-        .screen { display: none; padding: 15px; max-width: 600px; margin: 0 auto; animation: fadeIn 0.3s; }
-        .active { display: block; }
-        .card { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 15px; }
-        
-        .inp { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--border); margin-bottom: 12px; font-size: 14px; outline: none; }
-        .btn { width: 100%; padding: 12px; border-radius: 6px; border: none; background: var(--primary); color: white; font-weight: 700; cursor: pointer; }
-        
-        /* VIDEO BOX */
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; margin-bottom: 15px; border: 1px solid var(--border); }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-
-        /* NAV */
-        .nav { position: fixed; bottom: 0; width: 100%; max-width: 600px; left: 50%; transform: translateX(-50%); background: #fff; display: flex; border-top: 1px solid var(--border); padding: 10px 0; }
-        .nav-item { flex: 1; text-align: center; color: #57606a; font-size: 11px; cursor: pointer; }
-        .nav-item.active { color: var(--link); font-weight: 700; }
-        .nav-item i { font-size: 20px; margin-bottom: 4px; display: block; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    </style>
-</head>
-<body>
-
-    <div id="auth-screen" style="padding:20px; max-width:400px; margin:auto;">
-        <div class="logo-area" style="justify-content:center; color:#24292e; margin: 30px 0;"><i class="fa-solid fa-rocket"></i> SSMBYAS</div>
-        
-        <div class="card" style="padding:10px;">
-            <p style="font-size:12px; font-weight:700; margin-bottom:8px; text-align:center;"><i class="fa-brands fa-youtube" style="color:red;"></i> How to use SSMBYAS?</p>
-            <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/uRvrUQ4c-s4" frameborder="0" allowfullscreen></iframe>
-            </div>
-        </div>
-
-        <div class="card" id="login-box">
-            <h3 style="margin-bottom:15px;">Login</h3>
-            <input type="text" id="l-user" class="inp" placeholder="Username">
-            <input type="password" id="l-pass" class="inp" placeholder="Password">
-            <button class="btn" onclick="login()">Sign In</button>
-            <p onclick="toggleAuth(true)" style="text-align:center; margin-top:15px; font-size:13px; color:var(--link); cursor:pointer;">Create New Account</p>
-        </div>
-
-        <div class="card" id="reg-box" style="display:none;">
-            <h3 style="margin-bottom:15px;">Register</h3>
-            <input type="text" id="r-user" class="inp" placeholder="Username">
-            <input type="email" id="r-email" class="inp" placeholder="Email Address">
-            <input type="password" id="r-pass" class="inp" placeholder="Password">
-            <button class="btn" onclick="register()">Create Account</button>
-            <p onclick="toggleAuth(false)" style="text-align:center; margin-top:15px; font-size:13px; color:var(--link); cursor:pointer;">Already have an account?</p>
-        </div>
-    </div>
-
-    <div id="main-app" style="display:none;">
-        <div class="header">
-            <div class="logo-area"><i class="fa-solid fa-rocket"></i> SSMBYAS</div>
-            <div style="font-size:12px; font-weight:700;" id="u-display">User</div>
-        </div>
-
-        <div id="dash-screen" class="screen active">
-            <div class="card" style="display:flex; justify-content:space-around; text-align:center;">
-                <div><small>Wallet</small><br><b id="u-bal" style="font-size:20px; color:var(--link);">₹0</b></div>
-                <div><small>Spent</small><br><b id="u-spent" style="font-size:20px;">₹0</b></div>
-            </div>
-
-            <div class="card">
-                <h4>Place Order</h4>
-                <select id="srv-select" class="inp">
-                    <option value="1798|0.10">Insta Views - ₹0.10/k</option>
-                    <option value="3274|45.00">Insta Followers (No Refill) - ₹45/k</option>
-                    <option value="3276|85.00">Insta Followers (Refill) - ₹85/k</option>
-                </select>
-                <input type="text" id="o-link" class="inp" placeholder="Link">
-                <input type="number" id="o-qty" class="inp" placeholder="Quantity">
-                <button class="btn" onclick="placeOrder()">Submit Order</button>
-            </div>
-        </div>
-
-        <div id="profile-screen" class="screen">
-            <div class="card">
-                <h3>My Account</h3>
-                <p id="p-email" style="color:#666; font-size:13px; margin-bottom:15px;"></p>
-                <button class="btn" style="background:#24292e;" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout Account</button>
-            </div>
-            <a href="https://wa.me/917388720018" target="_blank" class="btn" style="background:#25d366; display:block; text-align:center; text-decoration:none;"><i class="fa-brands fa-whatsapp"></i> Support 24x7</a>
-        </div>
-
-        <div id="admin-screen" class="screen">
-            <div class="card">
-                <h3 style="color:var(--danger)">Admin - Manage Users</h3>
-                <div id="adm-user-list" style="margin-top:15px;"></div>
-            </div>
-        </div>
-
-        <div class="nav">
-            <div class="nav-item active" onclick="showScreen('dash-screen', this)"><i class="fa-solid fa-home"></i>Dash</div>
-            <div class="nav-item" onclick="showScreen('profile-screen', this)"><i class="fa-solid fa-user"></i>Profile</div>
-            <div id="adm-nav" class="nav-item" style="display:none;" onclick="showScreen('admin-screen', this)"><i class="fa-solid fa-shield-halved"></i>Admin</div>
-        </div>
-    </div>
-
+<html>
+<head><title>ADMIN PANEL</title></head>
+<body style="background:#000; color:#fff; font-family:sans-serif; padding:20px;">
+    <h2>SUHEL ADMIN - PENDING UTR</h2>
+    <div id="list"></div>
     <script>
-        const API_KEY = "a7d12d23ae13ea214a8394c65241931a";
-        const API_URL = "https://mrsmm.org/api/v2";
-
-        let db = JSON.parse(localStorage.getItem('ssmbyas_v12')) || {
-            users: { 'suhel': {pass:'7388', email:'admin@ssmbyas.com', bal:1000, spent:0, orders:[]} },
-            session: null
-        };
-
-        // AUTO LOGIN CHECK
-        window.onload = () => { if(db.session) { currentUser = db.session; launch(); } };
-
-        let currentUser = null;
-
-        function toggleAuth(r) {
-            document.getElementById('login-box').style.display = r ? 'none' : 'block';
-            document.getElementById('reg-box').style.display = r ? 'block' : 'none';
+        function render() {
+            const reqs = JSON.parse(localStorage.getItem('suhel_reqs') || '[]');
+            const container = document.getElementById('list');
+            container.innerHTML = "";
+            reqs.forEach((r, i) => {
+                if(r.status === 'pending') {
+                    container.innerHTML += `<div style="border:1px solid #333; padding:10px; margin:10px;">
+                        UTR: ${r.utr} | Device: ${r.dev} 
+                        <button onclick="approve('${r.dev}', ${i})" style="background:#00ff41; padding:5px;">APPROVE (72H)</button>
+                    </div>`;
+                }
+            });
         }
-
-        function register() {
-            let u = document.getElementById('r-user').value.toLowerCase().trim();
-            let e = document.getElementById('r-email').value;
-            let p = document.getElementById('r-pass').value;
-            if(!u || !p || !e) return alert("Fill all details!");
-            if(db.users[u]) return alert("User exists!");
-            db.users[u] = { pass:p, email:e, bal:0, spent:0, orders:[] };
-            save(); alert("Registered! Login now."); toggleAuth(false);
+        function approve(dev, idx) {
+            let apps = JSON.parse(localStorage.getItem('suhel_approvals') || '{}');
+            let reqs = JSON.parse(localStorage.getItem('suhel_reqs') || '[]');
+            // 72 Hours Expiry
+            apps[dev] = { expiry: new Date().getTime() + (72 * 60 * 60 * 1000) };
+            reqs[idx].status = 'approved';
+            localStorage.setItem('suhel_approvals', JSON.stringify(apps));
+            localStorage.setItem('suhel_reqs', JSON.stringify(reqs));
+            alert("Approved!");
+            render();
         }
-
-        function login() {
-            let u = document.getElementById('l-user').value.toLowerCase().trim();
-            let p = document.getElementById('l-pass').value;
-            if(db.users[u] && db.users[u].pass === p) { 
-                db.session = u; 
-                currentUser = u; 
-                save(); 
-                launch(); 
-            } else alert("Invalid Login!");
-        }
-
-        function logout() {
-            db.session = null;
-            save();
-            location.reload();
-        }
-
-        function launch() {
-            document.getElementById('auth-screen').style.display = 'none';
-            document.getElementById('main-app').style.display = 'block';
-            document.getElementById('u-display').innerText = currentUser;
-            document.getElementById('p-email').innerText = db.users[currentUser].email;
-            if(currentUser === 'suhel') document.getElementById('adm-nav').style.display = 'block';
-            updateUI();
-        }
-
-        // ADMIN FUNCTIONS
-        function loadAdmin() {
-            let html = "";
-            for(let u in db.users) {
-                let usr = db.users[u];
-                html += `<div class="card" style="font-size:12px;">
-                    <b>User:</b> ${u} | <b>Bal:</b> ₹${usr.bal} <br>
-                    <button onclick="editBal('${u}')" style="font-size:10px; padding:3px; margin-top:5px; background:var(--link); color:#fff; border:none; border-radius:3px;">+/- Balance</button>
-                    <button onclick="delUser('${u}')" style="font-size:10px; padding:3px; background:var(--danger); color:#fff; border:none; border-radius:3px;">Delete</button>
-                </div>`;
-            }
-            document.getElementById('adm-user-list').innerHTML = html;
-        }
-
-        function editBal(u) {
-            let amt = prompt("Enter amount to add (use minus to subtract):", "100");
-            if(amt) { db.users[u].bal += parseFloat(amt); save(); loadAdmin(); }
-        }
-
-        function delUser(u) {
-            if(u === 'suhel') return alert("Admin cannot be deleted!");
-            if(confirm("Delete " + u + "?")) { delete db.users[u]; save(); loadAdmin(); }
-        }
-
-        function updateUI() {
-            let usr = db.users[currentUser];
-            document.getElementById('u-bal').innerText = "₹" + usr.bal.toFixed(2);
-            document.getElementById('u-spent').innerText = "₹" + usr.spent.toFixed(2);
-        }
-
-        function showScreen(id, el) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            if(el) el.classList.add('active');
-            if(id === 'admin-screen') loadAdmin();
-        }
-
-        function save() { localStorage.setItem('ssmbyas_v12', JSON.stringify(db)); }
+        render();
     </script>
 </body>
 </html>
